@@ -11,13 +11,28 @@
   <body>
     <header class="header flex align-items-center">
       <button class="hamburger"></button>
-      <h1 class="text--size-medium text--weight-normal text--color-secondary mg-l-40">Calendar</h1>
+      <h1
+        class="
+          text--size-medium text--weight-normal text--color-secondary
+          mg-l-40
+        "
+      >
+        Calendar
+      </h1>
       <button class="btn mg-l-50">Today</button>
       <button class="btn btn--no-border btn--circle mg-l-40">
-        <img class="w-12-5 h-auto" src="images/chevron-left.svg" alt="Previous week" />
+        <img
+          class="w-12-5 h-auto"
+          src="images/chevron-left.svg"
+          alt="Previous week"
+        />
       </button>
       <button class="btn btn--no-border btn--circle mg-l-10">
-        <img class="w-12-5 h-auto" src="images/chevron-right.svg" alt="Next week" />
+        <img
+          class="w-12-5 h-auto"
+          src="images/chevron-right.svg"
+          alt="Next week"
+        />
       </button>
       <h2 class="text--size-medium text--weight-normal mg-l-40">
         Showing month
@@ -32,14 +47,14 @@
         <section class="mini-calendar mg-t-20">
           <header class="mini-calendar__header flex align-items-end">
             <h3 class="text--size-small text--weight-normal">June 2021</h3>
-            <button
-              class="btn btn--no-border mg-l-auto "
-            >
-              <img class="w-12-5 h-auto" src="images/chevron-left.svg" alt="Previous week" />
+            <button class="btn btn--no-border mg-l-auto">
+              <img
+                class="w-12-5 h-auto"
+                src="images/chevron-left.svg"
+                alt="Previous week"
+              />
             </button>
-            <button
-              class="btn btn--no-border mg-l-10 "
-            >
+            <button class="btn btn--no-border mg-l-10">
               <img
                 class="w-12-5 h-auto"
                 src="images/chevron-right.svg"
@@ -114,173 +129,174 @@
       </aside>
       <section class="calendar w-max">
         <header class="calendar__top flex">
-            <aside 
+          <aside
+            class="
+              flex
+              justify-content-center
+              align-items-end
+              calendar__hour-cell
+              h-max
+            "
+          >
+            <span class="text--size-small text--color-secondary">gmt+03</span>
+          </aside>
+          <ul class="flex w-max list-s-type-none text--color-secondary">
+            <li
               class="
-                flex justify-content-center 
-                align-items-end calendar__hour-cell 
-                h-max
-                "
-                >
-              <span class="text--size-small text--color-secondary">gmt+03</span>
-            </aside>
-            <ul class="flex w-max list-s-type-none text--color-secondary">
-              <li
-                class="
-                  flex flex-dir-col
-                  justify-content-around
-                  align-items-center
-                  w-max
-                  calendar__top-cell
-                "
-              >
-                <p class="text--size-small">Sun</p>
-                <p class="text--size-medium">27</p>
-              </li>
-              <li
-                class="
-                  flex flex-dir-col
-                  justify-content-around
-                  align-items-center
-                  w-max
-                  calendar__top-cell
-                "
-              >
-                <p class="text--size-small">Mon</p>
-                <p class="text--size-medium">28</p>
-              </li>
-              <li
-                class="
-                  flex flex-dir-col
-                  justify-content-around
-                  align-items-center
-                  w-max
-                  calendar__top-cell
-                "
-              >
-                <p class="text--size-small">Tue</p>
-                <p class="text--size-medium">29</p>
-              </li>
-              <li
-                class="
-                  flex flex-dir-col
-                  justify-content-around
-                  align-items-center
-                  w-max
-                  calendar__top-cell
-                "
-              >
-                <p class="text--size-small">Wed</p>
-                <p class="text--size-medium">30</p>
-              </li>
-              <li
-                class="
-                  flex flex-dir-col
-                  justify-content-around
-                  align-items-center
-                  w-max
-                  calendar__top-cell
-                "
-              >
-                <p class="text--size-small">Thu</p>
-                <p class="text--size-medium">1</p>
-              </li>
-              <li
-                class="
-                  flex flex-dir-col
-                  justify-content-around
-                  align-items-center
-                  w-max
-                  calendar__top-cell
-                "
-              >
-                <p class="text--size-small">Fri</p>
-                <p class="text--size-medium">2</p>
-              </li>
-              <li
-                class="
-                  flex flex-dir-col
-                  justify-content-around
-                  align-items-center
-                  w-max
-                  calendar__top-cell
-                "
-              >
-                <p class="text--size-small">Sat</p>
-                <p class="text--size-medium">3</p>
-              </li>
-            </ul>
+                flex flex-dir-col
+                justify-content-around
+                align-items-center
+                w-max
+                calendar__top-cell
+              "
+            >
+              <p class="text--size-small">Sun</p>
+              <p class="text--size-medium">27</p>
+            </li>
+            <li
+              class="
+                flex flex-dir-col
+                justify-content-around
+                align-items-center
+                w-max
+                calendar__top-cell
+              "
+            >
+              <p class="text--size-small">Mon</p>
+              <p class="text--size-medium">28</p>
+            </li>
+            <li
+              class="
+                flex flex-dir-col
+                justify-content-around
+                align-items-center
+                w-max
+                calendar__top-cell
+              "
+            >
+              <p class="text--size-small">Tue</p>
+              <p class="text--size-medium">29</p>
+            </li>
+            <li
+              class="
+                flex flex-dir-col
+                justify-content-around
+                align-items-center
+                w-max
+                calendar__top-cell
+              "
+            >
+              <p class="text--size-small">Wed</p>
+              <p class="text--size-medium">30</p>
+            </li>
+            <li
+              class="
+                flex flex-dir-col
+                justify-content-around
+                align-items-center
+                w-max
+                calendar__top-cell
+              "
+            >
+              <p class="text--size-small">Thu</p>
+              <p class="text--size-medium">1</p>
+            </li>
+            <li
+              class="
+                flex flex-dir-col
+                justify-content-around
+                align-items-center
+                w-max
+                calendar__top-cell
+              "
+            >
+              <p class="text--size-small">Fri</p>
+              <p class="text--size-medium">2</p>
+            </li>
+            <li
+              class="
+                flex flex-dir-col
+                justify-content-around
+                align-items-center
+                w-max
+                calendar__top-cell
+              "
+            >
+              <p class="text--size-small">Sat</p>
+              <p class="text--size-medium">3</p>
+            </li>
           </ul>
         </header>
         <div class="flex calendar--container">
           <aside class="calendar__hour-cells">
             <ul class="list-s-type-none text--color-secondary">
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">1 AM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">2 AM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">3 AM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">4 AM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">5 AM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">6 AM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">7 AM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">8 AM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">9 AM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">10 AM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">11 AM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">12 PM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">1 PM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">2 PM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">3 PM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">4 PM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">5 PM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">6 PM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">7 PM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">8 PM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">9 PM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">10 PM</span>
               </li>
-              <li class="calendar__hour-cell ">
+              <li class="calendar__hour-cell">
                 <span class="calendar__hour-text text--size-small">11 PM</span>
               </li>
             </ul>
@@ -458,11 +474,129 @@
         </div>
       </section>
     </main>
-    <!-- <section class="modal">
-      <header class="modal-header"></header>
+    <section class="modal">
+      <header
+        class="modal-header flex justify-content-between align-items-center"
+      >
+        <p>-</p>
+        <button class="btn--no-border">X</button>
+      </header>
       <form class="modal-form">
-        <input type="text" placeholder="Add title" />
+        <input
+          class="modal-form__title-input"
+          type="text"
+          placeholder="Add title"
+        />
+        <div class="flex mg-t-10 justify-content-between">
+          <input
+            class="input__appearance-none input-radio"
+            type="radio"
+            id="event"
+            value="event"
+            name="event-type"
+          />
+          <label class="input" for="event">Event</label
+          ><input
+            class="input__appearance-none input-radio"
+            type="radio"
+            id="out-of-office"
+            value="out-of-office"
+            name="event-type"
+          />
+          <label class="input" for="out-of-office">Out of office</label>
+          <input
+            class="input__appearance-none input-radio"
+            type="radio"
+            id="task"
+            value="task"
+            name="event-type"
+          />
+          <label class="input" for="task">Task</label>
+          <input
+            class="input__appearance-none input-radio"
+            type="radio"
+            id="reminder"
+            value="reminder"
+            name="event-type"
+          />
+          <label class="input" for="reminder">Reminder</label
+          ><input
+            class="input__appearance-none input-radio"
+            type="radio"
+            id="a-slots"
+            value="a-slots"
+            name="event-type"
+          />
+          <label class="input" for="a-slots">Appointment slots</label>
+        </div>
+        <ul class="list-s-type-none">
+          <li class="list--custom-icon mg-t-10">
+            <div>
+              <input class="input input__date-none" id="date" type="date" />
+              <input
+                class="input-text input--short input input__arrow-none"
+                id="start-time"
+                value="0:15am"
+                type="text"
+                list="times"
+              />
+              -
+              <input
+                class="input-text input--short input input__arrow-none"
+                id="end-time"
+                value="0:30am"
+                type="text"
+                list="times"
+              />
+              <datalist id="times">
+                <option>0:15am</option>
+                <option>0:30am</option>
+                <option>0:45am</option>
+                <option>1:00am</option>
+                <option>1:15am</option>
+                <option>1:30am</option>
+                <option>1:45am</option>
+              </datalist>
+            </div>
+            <label class="input" for="all-day"
+              ><input
+                class="input-checkbox mg-t-10"
+                type="checkbox"
+                id="all-day"
+              />All day</label
+            >
+          </li>
+          <li class="list--custom-icon mg-t-10">
+            <input
+              class="input-text input"
+              type="text"
+              placeholder="Add guests"
+            />
+          </li>
+          <li class="list--custom-icon mg-t-10">
+            <select class="input">
+              <option value="">Add video Conferencing</option>
+              <option value="google">Google meet</option>
+              <option value="zoom">Zoom</option>
+            </select>
+          </li>
+          <li class="list--custom-icon mg-t-10">
+            <input
+              class="input-text input"
+              type="text"
+              placeholder="Add location"
+            />
+          </li>
+        </ul>
+        <div class="flex">
+          <button
+            type="submit"
+            class="btn btn--wide btn--blue btn--no-border mg-l-auto mg-t-10"
+          >
+            Save
+          </button>
+        </div>
       </form>
-    </section> -->
+    </section>
   </body>
 </html>
