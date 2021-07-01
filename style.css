@@ -26,11 +26,14 @@ body {
   padding-left: 35px;
   padding-right: 35px;
   border-bottom: 1px solid rgb(215, 215, 215);
+  display: flex;
+  align-items: center;
 }
 
 /* Sidebar */
 
 .sidebar {
+  width: 250px;
   padding: 10px;
 }
 
@@ -44,6 +47,18 @@ body {
 
 .mini-calendar__header {
   padding-left: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.mini-calendar__row {
+  display: flex;
+}
+.mini-calendar__cell {
+  text-align: center;
+  width: 100%;
+  font-size: 10px;
+  margin-top: 15px;
 }
 
 /* Calendar */
@@ -53,9 +68,20 @@ body {
   height: 80px;
   padding-top: 10px;
   padding-right: 20px;
+  display: flex;
+}
+
+.calendar__top-cells {
+  display: flex;
+  width: 100%;
 }
 
 .calendar__top-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
   border-bottom: 1px solid rgb(215, 215, 215);
   position: relative;
   text-transform: uppercase;
@@ -77,6 +103,7 @@ body {
   width: 75px;
   text-transform: uppercase;
   flex-shrink: 0;
+  font-size: 12px;
 }
 
 .calendar__hour-cell::before {
@@ -99,13 +126,12 @@ body {
   border-left: 1px solid rgb(215, 215, 215);
 }
 
-.calendar--container {
+.calendar__container {
   height: calc(100vh - 145px);
   padding-right: 20px;
   overflow: scroll;
+  display: flex;
 }
-
-/* Renaming */
 
 .calendar__hour-text {
   position: absolute;
@@ -129,6 +155,9 @@ body {
 }
 
 .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-top: 3px;
   height: 30px;
   background-color: rgb(235, 235, 235);
