@@ -9,344 +9,451 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <header class="header border-bottom">
+    <header class="header flex align-items-center">
       <button class="hamburger"></button>
-      <h1 class="text-size-medium mg-l-20">Calendar</h1>
-      <button class="btn mg-l-20">Today</button>
-      <button class="btn btn--clear btn--rect w-25 mg-l-20">
-        <img src="images/chevron-left.svg" alt="Previous week" />
+      <h1 class="text--size-medium text--weight-normal text--color-secondary mg-l-40">Calendar</h1>
+      <button class="btn mg-l-50">Today</button>
+      <button class="btn btn--no-border btn--circle mg-l-40">
+        <img class="w-12-5 h-auto" src="images/chevron-left.svg" alt="Previous week" />
       </button>
-      <button class="btn btn--clear btn--rect w-25 mg-l-20">
-        <img src="images/chevron-right.svg" alt="Next week" />
+      <button class="btn btn--no-border btn--circle mg-l-10">
+        <img class="w-12-5 h-auto" src="images/chevron-right.svg" alt="Next week" />
       </button>
-      <h2 class="text-size-medium">Showing month</h2>
+      <h2 class="text--size-medium text--weight-normal mg-l-40">
+        Showing month
+      </h2>
       <button class="btn mg-l-auto">Week</button>
     </header>
-    <main class="grid">
-      <aside class="sidebar col-2 flex">
-        <button class="btn btn--round btn--clear">Create Event</button>
-        <div class="mini-calendar">
-          <header class="mini-calendar__header">
-            <h3 class="text-05">June 2021</h3>
-            <button class="btn btn--clear">
-              <img src="images/chevron-left.svg" alt="Previous week" />
+    <main class="main flex">
+      <aside class="sidebar col-2">
+        <button class="btn btn--lg btn--round btn--shadow btn--no-border">
+          Create Event
+        </button>
+        <section class="mini-calendar mg-t-20">
+          <header class="mini-calendar__header flex align-items-end">
+            <h3 class="text--size-small text--weight-normal">June 2021</h3>
+            <button
+              class="btn btn--no-border mg-l-auto "
+            >
+              <img class="w-12-5 h-auto" src="images/chevron-left.svg" alt="Previous week" />
             </button>
-            <button class="btn btn--clear">
-              <img src="images/chevron-right.svg" alt="Next week" />
+            <button
+              class="btn btn--no-border mg-l-10 "
+            >
+              <img
+                class="w-12-5 h-auto"
+                src="images/chevron-right.svg"
+                alt="Next week"
+              />
             </button>
           </header>
-          <ul class="list-row">
-            <li>S</li>
-            <li>M</li>
-            <li>T</li>
-            <li>W</li>
-            <li>W</li>
-            <li>F</li>
-            <li>S</li>
+          <ul class="flex list-s-type-none">
+            <li class="text--center w-max text--size-small mg-t-10">S</li>
+            <li class="text--center w-max text--size-small mg-t-10">M</li>
+            <li class="text--center w-max text--size-small mg-t-10">T</li>
+            <li class="text--center w-max text--size-small mg-t-10">W</li>
+            <li class="text--center w-max text--size-small mg-t-10">W</li>
+            <li class="text--center w-max text--size-small mg-t-10">F</li>
+            <li class="text--center w-max text--size-small mg-t-10">S</li>
           </ul>
-          <ul class="list-row">
-            <li>30</li>
-            <li>31</li>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>5</li>
+          <ul class="flex list-s-type-none">
+            <li class="text--center w-max text--size-small mg-t-10">30</li>
+            <li class="text--center w-max text--size-small mg-t-10">31</li>
+            <li class="text--center w-max text--size-small mg-t-10">1</li>
+            <li class="text--center w-max text--size-small mg-t-10">2</li>
+            <li class="text--center w-max text--size-small mg-t-10">3</li>
+            <li class="text--center w-max text--size-small mg-t-10">4</li>
+            <li class="text--center w-max text--size-small mg-t-10">5</li>
           </ul>
-          <ul class="list-row">
-            <li>6</li>
-            <li>7</li>
-            <li>8</li>
-            <li>9</li>
-            <li>10</li>
-            <li>11</li>
-            <li>12</li>
+          <ul class="flex list-s-type-none">
+            <li class="text--center w-max text--size-small mg-t-10">6</li>
+            <li class="text--center w-max text--size-small mg-t-10">7</li>
+            <li class="text--center w-max text--size-small mg-t-10">8</li>
+            <li class="text--center w-max text--size-small mg-t-10">9</li>
+            <li class="text--center w-max text--size-small mg-t-10">10</li>
+            <li class="text--center w-max text--size-small mg-t-10">11</li>
+            <li class="text--center w-max text--size-small mg-t-10">12</li>
           </ul>
-          <ul class="list-row">
-            <li>13</li>
-            <li>14</li>
-            <li>15</li>
-            <li>16</li>
-            <li>17</li>
-            <li>18</li>
-            <li>19</li>
+          <ul class="flex list-s-type-none">
+            <li class="text--center w-max text--size-small mg-t-10">13</li>
+            <li class="text--center w-max text--size-small mg-t-10">14</li>
+            <li class="text--center w-max text--size-small mg-t-10">15</li>
+            <li class="text--center w-max text--size-small mg-t-10">16</li>
+            <li class="text--center w-max text--size-small mg-t-10">17</li>
+            <li class="text--center w-max text--size-small mg-t-10">18</li>
+            <li class="text--center w-max text--size-small mg-t-10">19</li>
           </ul>
-          <ul class="list-row">
-            <li>20</li>
-            <li>21</li>
-            <li>22</li>
-            <li>23</li>
-            <li>24</li>
-            <li>25</li>
-            <li>26</li>
+          <ul class="flex list-s-type-none">
+            <li class="text--center w-max text--size-small mg-t-10">20</li>
+            <li class="text--center w-max text--size-small mg-t-10">21</li>
+            <li class="text--center w-max text--size-small mg-t-10">22</li>
+            <li class="text--center w-max text--size-small mg-t-10">23</li>
+            <li class="text--center w-max text--size-small mg-t-10">24</li>
+            <li class="text--center w-max text--size-small mg-t-10">25</li>
+            <li class="text--center w-max text--size-small mg-t-10">26</li>
           </ul>
-          <ul class="list-row">
-            <li>27</li>
-            <li>28</li>
-            <li>29</li>
-            <li>30</li>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
+          <ul class="flex list-s-type-none">
+            <li class="text--center w-max text--size-small mg-t-10">27</li>
+            <li class="text--center w-max text--size-small mg-t-10">28</li>
+            <li class="text--center w-max text--size-small mg-t-10">29</li>
+            <li class="text--center w-max text--size-small mg-t-10">30</li>
+            <li class="text--center w-max text--size-small mg-t-10">1</li>
+            <li class="text--center w-max text--size-small mg-t-10">2</li>
+            <li class="text--center w-max text--size-small mg-t-10">3</li>
           </ul>
-          <ul class="list-row">
-            <li>4</li>
-            <li>5</li>
-            <li>6</li>
-            <li>7</li>
-            <li>8</li>
-            <li>9</li>
-            <li>10</li>
+          <ul class="flex list-s-type-none">
+            <li class="text--center w-max text--size-small mg-t-10">4</li>
+            <li class="text--center w-max text--size-small mg-t-10">5</li>
+            <li class="text--center w-max text--size-small mg-t-10">6</li>
+            <li class="text--center w-max text--size-small mg-t-10">7</li>
+            <li class="text--center w-max text--size-small mg-t-10">8</li>
+            <li class="text--center w-max text--size-small mg-t-10">9</li>
+            <li class="text--center w-max text--size-small mg-t-10">10</li>
           </ul>
-        </div>
+        </section>
       </aside>
-      <section class="calendar grid">
-        <header class="calendar__top row">
-          <ul class="calendar-top flex">
-            <li class="relative small-aside bottom-r-border w-50">
-              <p class="absolute text--bottom text--trans-half">gmt+03</p>
-            </li>
-            <ul class="grid grow-1 border-bottom">
+      <section class="calendar w-max">
+        <header class="calendar__top flex">
+            <aside 
+              class="
+                flex justify-content-center 
+                align-items-end calendar__hour-cell 
+                h-max
+                "
+                >
+              <span class="text--size-small text--color-secondary">gmt+03</span>
+            </aside>
+            <ul class="flex w-max list-s-type-none text--color-secondary">
               <li
-                class="flex flex-dir-col justify-space-around align-item-center"
+                class="
+                  flex flex-dir-col
+                  justify-content-around
+                  align-items-center
+                  w-max
+                  calendar__top-cell
+                "
               >
-                <p class="">Sun</p>
-                <p class="">27</p>
+                <p class="text--size-small">Sun</p>
+                <p class="text--size-medium">27</p>
               </li>
               <li
-                class="flex flex-dir-col justify-space-around align-item-center"
+                class="
+                  flex flex-dir-col
+                  justify-content-around
+                  align-items-center
+                  w-max
+                  calendar__top-cell
+                "
               >
-                <p class="">Mon</p>
-                <p class="">28</p>
+                <p class="text--size-small">Mon</p>
+                <p class="text--size-medium">28</p>
               </li>
               <li
-                class="flex flex-dir-col justify-space-around align-item-center"
+                class="
+                  flex flex-dir-col
+                  justify-content-around
+                  align-items-center
+                  w-max
+                  calendar__top-cell
+                "
               >
-                <p class="">Tue</p>
-                <p class="">29</p>
+                <p class="text--size-small">Tue</p>
+                <p class="text--size-medium">29</p>
               </li>
               <li
-                class="flex flex-dir-col justify-space-around align-item-center"
+                class="
+                  flex flex-dir-col
+                  justify-content-around
+                  align-items-center
+                  w-max
+                  calendar__top-cell
+                "
               >
-                <p class="">Wed</p>
-                <p class="">30</p>
+                <p class="text--size-small">Wed</p>
+                <p class="text--size-medium">30</p>
               </li>
               <li
-                class="flex flex-dir-col justify-space-around align-item-center"
+                class="
+                  flex flex-dir-col
+                  justify-content-around
+                  align-items-center
+                  w-max
+                  calendar__top-cell
+                "
               >
-                <p class="">Thu</p>
-                <p class="">1</p>
+                <p class="text--size-small">Thu</p>
+                <p class="text--size-medium">1</p>
               </li>
               <li
-                class="flex flex-dir-col justify-space-around align-item-center"
+                class="
+                  flex flex-dir-col
+                  justify-content-around
+                  align-items-center
+                  w-max
+                  calendar__top-cell
+                "
               >
-                <p class="">Fri</p>
-                <p class="">2</p>
+                <p class="text--size-small">Fri</p>
+                <p class="text--size-medium">2</p>
               </li>
               <li
-                class="flex flex-dir-col justify-space-around align-item-center"
+                class="
+                  flex flex-dir-col
+                  justify-content-around
+                  align-items-center
+                  w-max
+                  calendar__top-cell
+                "
               >
-                <p class="">Sat</p>
-                <p class="">3</p>
+                <p class="text--size-small">Sat</p>
+                <p class="text--size-medium">3</p>
               </li>
             </ul>
           </ul>
         </header>
-        <div class="row">
-          <aside class="calendar__hours grid">
-            <p class="hour row">1 AM</p>
-            <p class="hour row">2 AM</p>
-            <p class="hour row">3 AM</p>
-            <p class="hour row">4 AM</p>
-            <p class="hour row">5 AM</p>
-            <p class="hour row">6 AM</p>
-            <p class="hour row">7 AM</p>
-            <p class="hour row">8 AM</p>
-            <p class="hour row">9 AM</p>
-            <p class="hour row">10 AM</p>
-            <p class="hour row">11 AM</p>
-            <p class="hour row">12 PM</p>
-            <p class="hour row">1 PM</p>
-            <p class="hour row">2 PM</p>
-            <p class="hour row">3 PM</p>
-            <p class="hour row">4 PM</p>
-            <p class="hour row">5 PM</p>
-            <p class="hour row">6 PM</p>
-            <p class="hour row">7 PM</p>
-            <p class="hour row">8 PM</p>
-            <p class="hour row">9 PM</p>
-            <p class="hour row">10 PM</p>
-            <p class="hour row">11 PM</p>
+        <div class="flex calendar--container">
+          <aside class="calendar__hour-cells">
+            <ul class="list-s-type-none text--color-secondary">
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">1 AM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">2 AM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">3 AM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">4 AM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">5 AM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">6 AM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">7 AM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">8 AM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">9 AM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">10 AM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">11 AM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">12 PM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">1 PM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">2 PM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">3 PM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">4 PM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">5 PM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">6 PM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">7 PM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">8 PM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">9 PM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">10 PM</span>
+              </li>
+              <li class="calendar__hour-cell ">
+                <span class="calendar__hour-text text--size-small">11 PM</span>
+              </li>
+            </ul>
           </aside>
-          <ul class="calendar-grid">
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
-            <li class="calendar-grid__item"></li>
+          <ul class="calendar-grid list-s-type-none">
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
+            <li class="calendar-grid__cell"></li>
           </ul>
         </div>
       </section>
