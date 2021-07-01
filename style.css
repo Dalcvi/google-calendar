@@ -122,13 +122,83 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0px 13px 27px -5px rgba(50, 50, 93, 0.25),
+  box-shadow: 0px 6px 45px -10px rgba(50, 50, 93, 0.25),
     0px 8px 16px -8px rgba(0, 0, 0, 0.3);
-  width: 80%;
-  height: 80%;
-  max-height: 682px;
-  max-width: 628px;
   background-color: white;
+  border-radius: 10px;
+}
+
+.modal-header {
+  margin-top: 3px;
+  height: 30px;
+  background-color: rgb(235, 235, 235);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.modal-form {
+  padding: 20px 10px 15px 80px;
+}
+
+.modal-form__title-input {
+  width: 100%;
+  font-size: 26px;
+  border: none;
+  border-bottom: 2px solid rgb(215, 215, 215);
+}
+
+.modal-form__title-input:focus {
+  border-bottom: 2px solid rgb(37, 59, 223);
+  outline: none;
+}
+
+/* Input */
+input[type="date"] {
+  font-family: "Roboto", sans-serif;
+}
+
+.input {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+}
+
+.input:hover {
+  background-color: rgb(235, 235, 235);
+}
+
+.input__date-none::-webkit-inner-spin-button,
+.input__date-none::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+.input-text {
+  width: 100%;
+  border: none;
+}
+
+.input-time .input-radio:checked + label {
+  background-color: rgba(209, 214, 254, 0.3);
+  color: rgb(13, 37, 218);
+}
+
+.input__appearance-none {
+  appearance: none;
+}
+
+.input-checkbox {
+  margin-right: 10px;
+}
+
+.input__arrow-none::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
+
+.input--short {
+  width: 80px;
 }
 
 /* Image */
@@ -252,6 +322,16 @@ img {
   border-radius: 50%;
 }
 
+.btn--wide {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.btn--blue {
+  background-color: rgb(37, 59, 223);
+  color: white;
+}
+
 /* Width/Height */
 
 .w-12-5 {
@@ -325,8 +405,26 @@ img {
   align-items: flex-end;
 }
 
+.justify-self-flex-end {
+  justify-self: flex-end;
+}
+
 /* Lists */
 
 .list-s-type-none {
   list-style-type: none;
+}
+
+.list--custom-icon {
+  position: relative;
+}
+.list--custom-icon::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: -40px;
+  height: 20px;
+  width: 20px;
+  background: linear-gradient(45deg, rgb(87, 239, 250), rgb(233, 50, 181))
+    center center / 1000% no-repeat;
 }
