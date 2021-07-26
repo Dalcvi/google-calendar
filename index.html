@@ -134,63 +134,74 @@
           <button class="modal-header__button">&times</button>
         </header>
         <form class="modal-form">
-          <input
-            name="title"
-            class="modal-form__title-input"
-            type="text"
-            placeholder="Add title"
-          />
-          <ul class="list-s-type-none">
-            <li class="list--custom-icon mg-t-10">
-              <div>
+          <template class="modal-form-template">
+            <input
+              name="title"
+              class="modal-form__title-input"
+              type="text"
+              placeholder="Add title"
+              required
+            />
+            <ul class="list-s-type-none">
+              <li class="list--custom-icon mg-t-10">
                 <input
-                  name="date"
-                  class="input input__date-none"
-                  id="date"
+                  name="starting-date"
+                  class="input"
+                  id="starting-date"
                   type="date"
+                  required
                 />
                 <input
                   name="starting-hour"
-                  class="input-text input--short input input__arrow-none"
-                  id="start-time"
+                  class="input-text input--short input"
+                  id="starting-hour"
                   value="0:15am"
-                  type="text"
-                  list="times"
+                  type="time"
+                  required
                 />
-                -
+              </li>
+              <li class="list--custom-icon">
+                <input
+                  name="ending-date"
+                  class="input"
+                  id="ending-date"
+                  type="date"
+                  required
+                />
                 <input
                   name="ending-hour"
-                  class="input-text input--short input input__arrow-none"
-                  id="end-time"
+                  class="input-text input--short input"
+                  id="ending-hour"
                   value="0:30am"
-                  type="text"
-                  list="times"
+                  type="time"
+                  required
                 />
-                <datalist id="times">
-                  <option>0:15am</option>
-                  <option>0:30am</option>
-                  <option>0:45am</option>
-                  <option>1:00am</option>
-                  <option>1:15am</option>
-                  <option>1:30am</option>
-                  <option>1:45am</option>
-                </datalist>
-              </div>
-            </li>
-          </ul>
-          <div class="modal-footer">
-            <button class="modal-footer__button" type="submit" class="btn">
-              Save
-            </button>
-          </div>
+              </li>
+              <li class="list--custom-icon">
+                <textarea
+                  name="description"
+                  placeholder="Description"
+                  class="modal-form--description"
+                ></textarea>
+              </li>
+            </ul>
+            <div class="modal-footer">
+              <button class="modal-footer__button" type="submit" class="btn">
+                Save
+              </button>
+            </div>
+          </template>
         </form>
       </section>
     </template>
     <script src="./components/header.js"></script>
     <script src="./components/modal.js"></script>
+    <script src="./components/form.js"></script>
+    <script src="./services/services.js"></script>
     <script src="./components/sidebar.js"></script>
     <script src="./components/miniCalendar.js"></script>
     <script src="./components/calendar.js"></script>
+    <script src="./components/event.js"></script>
     <script src="./index.js"></script>
   </body>
 </html>
