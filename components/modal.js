@@ -1,40 +1,37 @@
 class Modal {
-  constructor(eventButton, modalTemplate, formControlFunc) {
+  constructor(eventButton, eventAdd) {
     this.eventButton = eventButton;
-    this.modal = modalTemplate.content.querySelector('.modal');
+    this.form = null;
+    this.modal = null;
     this.body = document.body;
+    this.exitButton = null;
     this.modalActive = false;
     this.modalTop = 0;
     this.modalLeft = 0;
-    this.modalForm = null;
-    this.formControlFunc = formControlFunc;
+    this.eventAdd = eventAdd;
     this.__setup();
   }
 
   __setup() {
-    this.__getModalForm();
-    this.__setUpForm();
-    this.__setButtonEvent(this.eventButton, this.____createOn);
+    this.__setupModal();
+    this.__setButtonEvent(this.eventButton, this.__createModal);
+    this.__setButtonEvent(this.exitButton, this.__removeModal);
     this.__modalCoordinatesByButton();
     this.__clickNotOnModal();
   }
 
-  __getModalForm() {
-    this.modalForm = this.modal.querySelector('.modal-form');
-    console.log(this.modalForm);
+  __setupModal() {
+    this.modal = this.body
+      .querySelector('.modal-template')
+      .content.querySelector('.modal');
+    this.exitButton = this.modal.querySelector('.modal-header__button');
+    this.form = new Form(
+      this.modal.querySelector('.modal-form'),
+      this.eventAdd
+    );
   }
 
-  __setUpForm() {
-    this.modalForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const formData = this.modalForm.elements;
-
-      console.log(data.date);
-      if (formControlFunc(formData));
-    });
-  }
-
-  ____createOn() {
+  __createModal() {
     if (this.modalActive) {
       return;
     }
@@ -48,7 +45,7 @@ class Modal {
 
   __modalCoordinatesByButton() {
     let rect = this.eventButton.getBoundingClientRect();
-    console.log(rect.top, rect.right, rect.bottom, rect.left);
+
     this.modalTop = rect.top;
     this.modalLeft = rect.right + 5;
   }

@@ -194,10 +194,8 @@ class MiniCalendar {
   }
 
   __getFirstSunday(date) {
-    return new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate() - date.getDate() + 1 - date.getDay()
-    );
+    let newDate = new Date(date.getFullYear(), date.getMonth(), 1);
+    newDate.setDate(newDate.getDate() - newDate.getDay());
+    return newDate;
   }
 }

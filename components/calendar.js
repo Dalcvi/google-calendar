@@ -1,5 +1,13 @@
 class Calendar {
-  constructor(calendar, todayButton, monthText, leftButton, rightButton) {
+  constructor(
+    calendar,
+    todayButton,
+    monthText,
+    leftButton,
+    rightButton,
+    events,
+    updateFunction
+  ) {
     this.calendar = calendar;
     this.todayButton = todayButton;
     this.monthText = monthText;
@@ -8,6 +16,9 @@ class Calendar {
     this.weekOffset = 0;
     this.__headerCells = [];
     this.today = new Date();
+    this.events = events;
+    this.calendarGrid = null;
+    this.updateFunction = updateFunction;
     this.__createCalendar();
     this.__firstSetup();
   }
@@ -33,6 +44,9 @@ class Calendar {
     this.__setButtonEvent(this.todayButton, this.__resetToToday);
     this.__setButtonEvent(this.leftButton, this.__calendarBack);
     this.__setButtonEvent(this.rightButton, this.__calendarForward);
+
+    this.updateFunction(this.__createEventsByWeek.bind(this));
+    this.__createEventsByWeek();
   }
 
   __createCalendar() {
@@ -68,9 +82,9 @@ class Calendar {
     const hourCells = calendarGrid.querySelectorAll('.calendar__hour-cell');
     this.__fillHourCellsTime(hourCells);
 
-    const grid = calendarGrid.querySelector('.calendar-grid');
-    const gridCell = grid.querySelector('.calendar-grid__cell');
-    this.__createCalendarGrid(grid, gridCell);
+    this.calendarGrid = calendarGrid.querySelector('.calendar-grid');
+    const gridCell = this.calendarGrid.querySelector('.calendar-grid__cell');
+    this.__createCalendarGrid(this.calendarGrid, gridCell);
     return calendarGrid;
   }
 
@@ -153,6 +167,7 @@ class Calendar {
   }
 
   __calendarMove() {
+    this.__createEventsByWeek();
     const dateByOffset = new Date(
       this.today.getFullYear(),
       this.today.getMonth(),
@@ -164,9 +179,31 @@ class Calendar {
 
   __resetToToday() {
     this.weekOffset = 0;
+    this.__createEventsByWeek();
     this.__changeHeaderDaysByDate(this.today);
 
     this.__setMonthNameByweek(this.today);
+  }
+
+  __createEventsByWeek() {
+    console.log('okay');
+    this.__removePreviousEvents();
+    const dateByOffset = new Date(
+      this.today.getFullYear(),
+      this.today.getMonth(),
+      this.today.getDate() + this.weekOffset * 7
+    );
+
+    this.events.forEach((event) => {
+      event.createEvents(dateByOffset, this.calendarGrid);
+    });
+  }
+
+  __removePreviousEvents() {
+    const events = this.calendarGrid.querySelectorAll('.calendar__event');
+    events.forEach((event) => {
+      this.calendarGrid.removeChild(event);
+    });
   }
 
   __setMonthNameByweek(date) {
