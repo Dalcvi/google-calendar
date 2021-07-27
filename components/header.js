@@ -1,6 +1,6 @@
 class Header {
   constructor(header, sidebar, eventButton) {
-    this.header = header;
+    this.__header = header;
     this.hamburger = null;
     this.monthText = null;
     this.todayButton = null;
@@ -11,7 +11,7 @@ class Header {
 
   __createHeader() {
     const headerTemplate =
-      this.header.querySelector('.header-template').content;
+      this.__header.querySelector('.header-template').content;
 
     this.hamburger = headerTemplate.querySelector('.hamburger');
     this.monthText = headerTemplate.querySelector('.header__month-title');
@@ -23,6 +23,6 @@ class Header {
       '[data-main-action="right"]'
     );
 
-    this.header.appendChild(headerTemplate);
+    this.__header.appendChild(headerTemplate);
   }
 }

@@ -1,17 +1,17 @@
 class Sidebar {
   constructor(sidebar, eventButton, toggleButton) {
-    this.sidebar = sidebar;
+    this.__sidebar = sidebar;
     this.eventButton = eventButton;
-    this.toggleButton = toggleButton;
+    this.__toggleButton = toggleButton;
     this.__setup();
   }
 
   __setup() {
-    this.__setButtonEvent(this.toggleButton, this.__sidebarToggle);
+    this.__setButtonEvent(this.__toggleButton, this.__sidebarToggle);
   }
 
   __sidebarToggle() {
-    this.sidebar.classList.toggle('sidebar--closed');
+    this.__sidebar.classList.toggle('sidebar--closed');
     this.eventButton.classList.toggle('event-btn--circle');
   }
 

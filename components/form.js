@@ -1,157 +1,169 @@
 class Form {
-  constructor(form, eventAdd) {
+  constructor(form, eventAdd, closeModal) {
     console.log('called');
-    this.form = form;
-    this.formTemplate = null;
-    this.title = null;
-    this.startingDate = null;
-    this.endingDate = null;
-    this.startingHour = null;
-    this.endingHour = null;
-    this.eventAdd = eventAdd;
-    this.today = new Date();
+    this.__form = form;
+    this.__formTemplate = null;
+    this.__title = null;
+    this.__startingDate = null;
+    this.__endingDate = null;
+    this.__startingHour = null;
+    this.__endingHour = null;
+    this.__description = null;
+    this.__eventAdd = eventAdd;
+    this.__today = new Date();
+    this.__closeModal = closeModal;
     this.__setup();
   }
+
+  /* Setup */
 
   __setup() {
     this.__formElementsSetup();
     this.__startingDateSetup();
     this.__endingDateSetup();
-    this.__hourSetup(this.startingHour);
-    this.__hourSetup(this.endingHour);
+    this.__hourSetup(this.__startingHour);
+    this.__hourSetup(this.__endingHour);
     this.__setupFormData();
 
-    this.form.appendChild(this.formTemplate);
+    this.__form.appendChild(this.__formTemplate);
   }
 
   __formElementsSetup() {
-    this.formTemplate = this.form.querySelector('.modal-form-template').content;
-    this.title = this.formTemplate.querySelector('input[name="title"]');
-    this.startingDate = this.formTemplate.querySelector(
+    this.__formTemplate = this.__form.querySelector(
+      '.modal-form-template'
+    ).content;
+    this.__title = this.__formTemplate.querySelector('input[name="title"]');
+    this.__startingDate = this.__formTemplate.querySelector(
       'input[name="starting-date"]'
     );
-    console.log(this.startingDate);
-    this.endingDate = this.formTemplate.querySelector(
+    this.__endingDate = this.__formTemplate.querySelector(
       'input[name="ending-date"]'
     );
-    this.startingHour = this.formTemplate.querySelector(
+    this.__startingHour = this.__formTemplate.querySelector(
       'input[name="starting-hour"]'
     );
-    this.endingHour = this.formTemplate.querySelector(
+    this.__endingHour = this.__formTemplate.querySelector(
       'input[name="ending-hour"]'
+    );
+    this.__description = this.__formTemplate.querySelector(
+      'textarea[name="description"]'
     );
   }
 
   __startingDateSetup() {
-    const todayDateString = this.__getFullDate(this.today);
-    this.startingDate.setAttribute('min', todayDateString);
-    this.startingDate.value = todayDateString;
+    const todayDateString = this.__getFullDate(this.__today);
+    this.__startingDate.value = todayDateString;
 
     const onChange = () => {
-      const tempDate = new Date(this.startingDate.value);
-      if (this.__compareStringDates(this.startingDate.value, todayDateString)) {
-        this.startingDate.value = todayDateString;
-      }
-
+      const tempDate = new Date(this.__startingDate.value);
       if (
         this.__compareStringDates(
-          this.startingDate.value,
-          this.endingDate.value
+          this.__startingDate.value,
+          this.__endingDate.value
         )
       ) {
         return;
       }
 
       let newDate = this.__getFullDate(tempDate);
-      this.endingDate.setAttribute('min', newDate);
-      this.endingDate.value = this.startingDate.value;
+      this.__endingDate.setAttribute('min', newDate);
+      this.__endingDate.value = this.__startingDate.value;
     };
 
-    this.startingDate.addEventListener(
+    this.__startingDate.addEventListener(
       'change',
       this.__debounce(onChange, 500)
     );
   }
 
   __endingDateSetup() {
-    this.endingDate.setAttribute('min', this.startingDate.value);
-    this.endingDate.value = this.startingDate.value;
+    this.__endingDate.setAttribute('min', this.__startingDate.value);
+    this.__endingDate.value = this.__startingDate.value;
 
     const onChange = () => {
       if (
         this.__compareStringDates(
-          this.startingDate.value,
-          this.endingDate.value
+          this.__startingDate.value,
+          this.__endingDate.value
         )
       ) {
         return;
       }
 
-      let newDate = this.__getFullDate(new Date(this.startingDate.value));
-      this.endingDate.setAttribute('min', newDate);
-      this.endingDate.value = this.startingDate.value;
+      let newDate = this.__getFullDate(new Date(this.__startingDate.value));
+      this.__endingDate.setAttribute('min', newDate);
+      this.__endingDate.value = this.__startingDate.value;
     };
 
-    this.endingDate.addEventListener('change', this.__debounce(onChange, 500));
+    this.__endingDate.addEventListener(
+      'change',
+      this.__debounce(onChange, 500)
+    );
   }
 
   __hourSetup(element) {
-    element.value = `${this.today.getHours()}:${this.today.getMinutes()}`;
+    element.value = `${this.__today.getHours()}:${this.__today.getMinutes()}`;
     element.addEventListener(
       'change',
       this.__debounce(this.__hourOnChange.bind(this), 500)
     );
   }
 
+  __setupFormData() {
+    this.__form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const formData = this.__form.elements;
+      if (!this.__checkTitle()) {
+        return;
+      }
+      const titleValue = formData['title'].value;
+      const startingDateValue = formData['starting-date'].value;
+      const startingHourValue = formData['starting-hour'].value;
+      const endingDateValue = formData['ending-date'].value;
+      const endingHourValue = formData['ending-hour'].value;
+      const descriptionValue = formData['description'].value;
+      this.__eventAdd(
+        titleValue,
+        startingDateValue,
+        startingHourValue,
+        endingDateValue,
+        endingHourValue,
+        descriptionValue
+      );
+
+      this.__clearFormData();
+      this.__closeModal();
+    });
+  }
+
+  /* Utils */
+
   __hourOnChange() {
-    if (this.startingDate.value !== this.endingDate.value) {
+    if (this.__startingDate.value !== this.__endingDate.value) {
       return;
     }
-    const [startingHour, startingMinutes] = this.startingHour.value.split(':');
-    const [endingHour, endingMinutes] = this.endingHour.value.split(':');
+    const [startingHour, startingMinutes] =
+      this.__startingHour.value.split(':');
+    const [endingHour, endingMinutes] = this.__endingHour.value.split(':');
     if (
       startingHour < endingHour ||
       (startingHour === endingHour && startingMinutes <= endingMinutes)
     ) {
       return;
     }
-    this.endingHour.value = this.startingHour.value;
+    this.__endingHour.value = this.__startingHour.value;
   }
   __clearFormData() {
-    this.title = '';
+    this.__title.value = '';
     this.__startingDateSetup();
     this.__endingDateSetup();
-    this.__hourSetup(this.startingHour);
-    this.__hourSetup(this.endingHour);
-    this.description = '';
-  }
-
-  __setupFormData() {
-    this.form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const formData = this.form.elements;
-      if (!this.__checkTitle()) {
-        return;
-      }
-      const titleValue = formData['title'].value;
-      const startingDate = formData['starting-date'].value;
-      const startingHour = formData['starting-hour'].value;
-      const endingDate = formData['ending-date'].value;
-      const endingHour = formData['ending-hour'].value;
-      const description = formData['description'].value;
-      this.eventAdd(
-        titleValue,
-        startingDate,
-        startingHour,
-        endingDate,
-        endingHour,
-        description
-      );
-    });
+    this.__hourSetup(this.__startingHour);
+    this.__hourSetup(this.__endingHour);
+    this.__description.value = '';
   }
 
   __checkTitle() {
-    return this.title.value.length > 0;
+    return this.__title.value.length > 0;
   }
 
   __getFullDate(date) {

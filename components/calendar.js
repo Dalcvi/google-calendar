@@ -8,20 +8,22 @@ class Calendar {
     events,
     updateFunction
   ) {
-    this.calendar = calendar;
-    this.todayButton = todayButton;
-    this.monthText = monthText;
-    this.leftButton = leftButton;
-    this.rightButton = rightButton;
-    this.weekOffset = 0;
+    this.__calendar = calendar;
+    this.__todayButton = todayButton;
+    this.__monthText = monthText;
+    this.__leftButton = leftButton;
+    this.__rightButton = rightButton;
+    this.__weekOffset = 0;
     this.__headerCells = [];
-    this.today = new Date();
-    this.events = events;
-    this.calendarGrid = null;
-    this.updateFunction = updateFunction;
+    this.__today = new Date();
+    this.__events = events;
+    this.__calendarGrid = null;
+    this.__updateFunction = updateFunction;
     this.__createCalendar();
     this.__firstSetup();
   }
+
+  /* Setup */
 
   __monthNameByNumber = {
     0: 'January',
@@ -39,28 +41,28 @@ class Calendar {
   };
 
   __firstSetup() {
-    this.__changeHeaderDaysByDate(this.today);
-    this.__setMonthNameByweek(this.today);
-    this.__setButtonEvent(this.todayButton, this.__resetToToday);
-    this.__setButtonEvent(this.leftButton, this.__calendarBack);
-    this.__setButtonEvent(this.rightButton, this.__calendarForward);
+    this.__changeHeaderDaysByDate(this.__today);
+    this.__setMonthNameByweek(this.__today);
+    this.__setButtonEvent(this.__todayButton, this.__resetToToday);
+    this.__setButtonEvent(this.__leftButton, this.__calendarBack);
+    this.__setButtonEvent(this.__rightButton, this.__calendarForward);
 
-    this.updateFunction(this.__createEventsByWeek.bind(this));
+    this.__updateFunction(this.__createEventsByWeek.bind(this));
     this.__createEventsByWeek();
   }
 
   __createCalendar() {
     const header = this.__createCalendarHeader();
 
-    this.calendar.appendChild(header);
+    this.__calendar.appendChild(header);
 
     const calendarGrid = this.__createCalendarMain();
 
-    this.calendar.appendChild(calendarGrid);
+    this.__calendar.appendChild(calendarGrid);
   }
 
   __createCalendarHeader() {
-    const header = this.calendar.querySelector(
+    const header = this.__calendar.querySelector(
       '.calendar__top-template'
     ).content;
 
@@ -71,7 +73,7 @@ class Calendar {
 
   __createCalendarMain() {
     const calendarGrid =
-      this.calendar.querySelector('.calendar-template').content;
+      this.__calendar.querySelector('.calendar-template').content;
     const hourCellsContainer = calendarGrid.querySelector(
       '.calendar__hour-cells-container'
     );
@@ -82,9 +84,9 @@ class Calendar {
     const hourCells = calendarGrid.querySelectorAll('.calendar__hour-cell');
     this.__fillHourCellsTime(hourCells);
 
-    this.calendarGrid = calendarGrid.querySelector('.calendar-grid');
-    const gridCell = this.calendarGrid.querySelector('.calendar-grid__cell');
-    this.__createCalendarGrid(this.calendarGrid, gridCell);
+    this.__calendarGrid = calendarGrid.querySelector('.calendar-grid');
+    const gridCell = this.__calendarGrid.querySelector('.calendar-grid__cell');
+    this.__createCalendarGrid(this.__calendarGrid, gridCell);
     return calendarGrid;
   }
 
@@ -110,6 +112,8 @@ class Calendar {
     }
   }
 
+  /* Header */
+
   __changeHeaderDaysByDate(givenDate) {
     let date = this.__getWeekSundayFromDate(givenDate);
 
@@ -134,76 +138,35 @@ class Calendar {
     }
   }
 
-  __getWeekSundayFromDate(date) {
-    return new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate() - date.getDay()
-    );
-  }
-
-  __checkIfDateIsToday(date) {
-    return (
-      date.getFullYear() === this.today.getFullYear() &&
-      date.getMonth() === this.today.getMonth() &&
-      date.getDate() === this.today.getDate()
-    );
-  }
-
-  __setButtonEvent(button, func) {
-    button.addEventListener('click', () => {
-      func.call(this);
-    });
-  }
-
-  __calendarBack() {
-    this.weekOffset--;
-    this.__calendarMove();
-  }
-
-  __calendarForward() {
-    this.weekOffset++;
-    this.__calendarMove();
-  }
+  /* Functionality */
 
   __calendarMove() {
     this.__createEventsByWeek();
     const dateByOffset = new Date(
-      this.today.getFullYear(),
-      this.today.getMonth(),
-      this.today.getDate() + this.weekOffset * 7
+      this.__today.getFullYear(),
+      this.__today.getMonth(),
+      this.__today.getDate() + this.__weekOffset * 7
     );
     this.__changeHeaderDaysByDate(dateByOffset);
     this.__setMonthNameByweek(dateByOffset);
   }
 
+  __calendarBack() {
+    this.__weekOffset--;
+    this.__calendarMove();
+  }
+
+  __calendarForward() {
+    this.__weekOffset++;
+    this.__calendarMove();
+  }
+
   __resetToToday() {
-    this.weekOffset = 0;
+    this.__weekOffset = 0;
     this.__createEventsByWeek();
-    this.__changeHeaderDaysByDate(this.today);
+    this.__changeHeaderDaysByDate(this.__today);
 
-    this.__setMonthNameByweek(this.today);
-  }
-
-  __createEventsByWeek() {
-    console.log('okay');
-    this.__removePreviousEvents();
-    const dateByOffset = new Date(
-      this.today.getFullYear(),
-      this.today.getMonth(),
-      this.today.getDate() + this.weekOffset * 7
-    );
-
-    this.events.forEach((event) => {
-      event.createEvents(dateByOffset, this.calendarGrid);
-    });
-  }
-
-  __removePreviousEvents() {
-    const events = this.calendarGrid.querySelectorAll('.calendar__event');
-    events.forEach((event) => {
-      this.calendarGrid.removeChild(event);
-    });
+    this.__setMonthNameByweek(this.__today);
   }
 
   __setMonthNameByweek(date) {
@@ -214,7 +177,7 @@ class Calendar {
       firstWeekDay.getDate() + 6
     );
     if (firstWeekDay.getMonth() === lastWeekDay.getMonth()) {
-      this.monthText.innerHTML = `${
+      this.__monthText.innerHTML = `${
         this.__monthNameByNumber[firstWeekDay.getMonth()]
       }`;
       return;
@@ -226,6 +189,52 @@ class Calendar {
       lastWeekDay.getMonth()
     ].slice(0, 3);
 
-    this.monthText.innerHTML = `${firstMonthName} - ${secondMonthName}`;
+    this.__monthText.innerHTML = `${firstMonthName} - ${secondMonthName}`;
+  }
+
+  /* Utils */
+
+  __getWeekSundayFromDate(date) {
+    return new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() - date.getDay()
+    );
+  }
+
+  __checkIfDateIsToday(date) {
+    return (
+      date.getFullYear() === this.__today.getFullYear() &&
+      date.getMonth() === this.__today.getMonth() &&
+      date.getDate() === this.__today.getDate()
+    );
+  }
+
+  __setButtonEvent(button, func) {
+    button.addEventListener('click', () => {
+      func.call(this);
+    });
+  }
+
+  /* Events */
+
+  __createEventsByWeek() {
+    this.__removePreviousEvents();
+    const dateByOffset = new Date(
+      this.__today.getFullYear(),
+      this.__today.getMonth(),
+      this.__today.getDate() + this.__weekOffset * 7
+    );
+
+    this.__events.forEach((event) => {
+      event.createEvents(dateByOffset, this.__calendarGrid);
+    });
+  }
+
+  __removePreviousEvents() {
+    const events = this.__calendarGrid.querySelectorAll('.calendar__event');
+    events.forEach((event) => {
+      this.__calendarGrid.removeChild(event);
+    });
   }
 }

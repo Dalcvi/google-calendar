@@ -1,53 +1,54 @@
 class Modal {
   constructor(eventButton, eventAdd) {
-    this.eventButton = eventButton;
-    this.form = null;
-    this.modal = null;
-    this.body = document.body;
-    this.exitButton = null;
-    this.modalActive = false;
-    this.modalTop = 0;
-    this.modalLeft = 0;
-    this.eventAdd = eventAdd;
+    this.__eventButton = eventButton;
+    this.__form = null;
+    this.__modal = null;
+    this.__body = document.body;
+    this.__exitButton = null;
+    this.__modalActive = false;
+    this.__modalTop = 0;
+    this.__modalLeft = 0;
+    this.__eventAdd = eventAdd;
     this.__setup();
   }
 
   __setup() {
     this.__setupModal();
-    this.__setButtonEvent(this.eventButton, this.__createModal);
+    this.__setButtonEvent(this.__eventButton, this.__createModal);
     this.__setButtonEvent(this.exitButton, this.__removeModal);
     this.__modalCoordinatesByButton();
     this.__clickNotOnModal();
   }
 
   __setupModal() {
-    this.modal = this.body
+    this.__modal = this.__body
       .querySelector('.modal-template')
       .content.querySelector('.modal');
-    this.exitButton = this.modal.querySelector('.modal-header__button');
-    this.form = new Form(
-      this.modal.querySelector('.modal-form'),
-      this.eventAdd
+    this.exitButton = this.__modal.querySelector('.modal-header__button');
+    this.__form = new Form(
+      this.__modal.querySelector('.modal-form'),
+      this.__eventAdd,
+      this.__removeModal.bind(this)
     );
   }
 
   __createModal() {
-    if (this.modalActive) {
+    if (this.__modalActive) {
       return;
     }
-    this.modal.style.top = this.modalTop + 'px';
-    this.modal.style.left = this.modalLeft + 'px';
+    this.__modal.style.top = this.__modalTop + 'px';
+    this.__modal.style.left = this.__modalLeft + 'px';
 
-    this.body.appendChild(this.modal);
+    this.__body.appendChild(this.__modal);
 
-    this.modalActive = true;
+    this.__modalActive = true;
   }
 
   __modalCoordinatesByButton() {
-    let rect = this.eventButton.getBoundingClientRect();
+    let rect = this.__eventButton.getBoundingClientRect();
 
-    this.modalTop = rect.top;
-    this.modalLeft = rect.right + 5;
+    this.__modalTop = rect.top;
+    this.__modalLeft = rect.right + 5;
   }
 
   __setButtonEvent(button, func) {
@@ -59,9 +60,9 @@ class Modal {
   __clickNotOnModal() {
     document.addEventListener('click', (e) => {
       if (
-        !this.modalActive ||
-        e.target === this.eventButton ||
-        this.modal.contains(e.target)
+        !this.__modalActive ||
+        e.target === this.__eventButton ||
+        this.__modal.contains(e.target)
       ) {
         return;
       }
@@ -71,7 +72,7 @@ class Modal {
   }
 
   __removeModal() {
-    this.modalActive = false;
-    this.body.removeChild(this.modal);
+    this.__modalActive = false;
+    this.__body.removeChild(this.__modal);
   }
 }
