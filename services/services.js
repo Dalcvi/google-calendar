@@ -12,16 +12,15 @@ class Services {
     }
     this.fromStorage = JSON.parse(this.fromStorage);
     for (let i = 0; i < this.fromStorage.length; i++) {
-      //   console.log(this.fromStorage[i]);
       let event = new Event(
-        this.fromStorage[i].title,
+        this.fromStorage[i].__title,
         null,
         null,
-        this.fromStorage[i].starting,
+        this.fromStorage[i].__starting,
         null,
         null,
-        this.fromStorage[i].ending,
-        this.fromStorage[i].description
+        this.fromStorage[i].__ending,
+        this.fromStorage[i].__description
       );
       this.eventsList.push(event);
     }
@@ -46,17 +45,14 @@ class Services {
       description
     );
 
-    this.eventsList.push(event.get());
+    this.eventsList.push(event);
     window.localStorage.setItem('events', JSON.stringify(this.eventsList));
-    console.log(this.updateFunc);
     if (this.updateFunc !== null) {
-      console.log('run');
       this.updateFunc();
     }
   }
 
   changeUpdateFunction(func) {
     this.updateFunc = func;
-    console.log('wtf');
   }
 }
