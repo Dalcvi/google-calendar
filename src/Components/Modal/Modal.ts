@@ -1,6 +1,5 @@
 import { store } from '../..';
 import { ModalModel } from '../../Models/ModalModel';
-import { Callback } from '../../Models/Model';
 import { Component, EventsMap, RegionsMap } from '../Component';
 import { ModalForm } from './ModalForm';
 

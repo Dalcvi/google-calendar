@@ -1,7 +1,6 @@
 import { store } from '../..';
 import { ModalModel } from '../../Models/ModalModel';
 import { EventModel } from '../../Models/EventModel';
-import { Callback } from '../../Models/Model';
 import {
   calculateDayDifference,
   getDateString,

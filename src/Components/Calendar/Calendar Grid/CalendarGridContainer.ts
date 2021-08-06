@@ -1,4 +1,3 @@
-import { store } from '../../..';
 import { Component } from '../../Component';
 import { CalendarEventContainer } from '../Events/CalendarEventContainer';
 import { CalendarGrid } from './CalendarGrid';

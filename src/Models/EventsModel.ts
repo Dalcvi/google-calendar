@@ -1,4 +1,4 @@
-import { EventModel, EventProps } from './EventModel';
+import { EventModel } from './EventModel';
 import { Model } from './Model';
 
 export interface EventsList {

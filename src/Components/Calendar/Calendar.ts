@@ -1,8 +1,6 @@
-import { store } from '../..';
 import { Component } from '../Component';
 import { CalendarGridContainer } from './Calendar Grid/CalendarGridContainer';
 import { CalendarHeader } from './Calendar Header/CalendarHeader';
-import { CalendarEventContainer } from './Events/CalendarEventContainer';
 
 export class Calendar extends Component {
   constructor(parentElement: Element) {

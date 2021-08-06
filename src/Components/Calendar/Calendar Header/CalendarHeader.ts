@@ -1,4 +1,3 @@
-import { store } from '../../..';
 import { Component } from '../../Component';
 import { CalendarHeaderCell } from './CalendarHeaderCell';
 

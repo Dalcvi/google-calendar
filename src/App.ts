@@ -1,13 +1,9 @@
-// import { Header } from './Components/Header';
-// import { MiniCalendar } from './Components/Mini Calendar/MiniCalendar';
 import { Sidebar } from './Components/Sidebar';
-import { Component } from './Components/Component';
 import { Header } from './Components/Header';
 import { Calendar } from './Components/Calendar/Calendar';
 import { EventButton } from './Components/EventButton';
 import { Modal } from './Components/Modal/Modal';
 import { store } from '.';
-import { EventModel } from './Models/EventModel';
 import { fetchEvents } from './Services/localSession';
 
 export class App {
@@ -47,10 +43,4 @@ export class App {
     this.eventButton.render();
     this.modal.render();
   }
-
-  // const header = new Header(headerElement, calendarModel);
-  // const sidebar = new Sidebar(sidebarElement, sidebarModel);
-
-  // header.render();
-  // sidebar.render();
 }

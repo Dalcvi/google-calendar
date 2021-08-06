@@ -1,9 +1,6 @@
-import { store } from '../../..';
-import { CalendarModel } from '../../../Models/CalendarModel';
 import { EventModel, EventPosition } from '../../../Models/EventModel';
-import { EventsModel } from '../../../Models/EventsModel';
 import { calculateDayDifference } from '../../../Utils/dates';
-import { Component, RegionsMap } from '../../Component';
+import { Component } from '../../Component';
 
 export class CalendarEvent extends Component {
   constructor(
