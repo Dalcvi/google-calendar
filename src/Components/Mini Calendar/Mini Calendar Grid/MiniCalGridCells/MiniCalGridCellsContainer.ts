@@ -1,9 +1,5 @@
 import { store } from '../../../..';
-import {
-  MiniCalendarModel,
-  MiniCalendarProps,
-} from '../../../../Models/MiniCalendarModel';
-import { getFirstDayOfWeek } from '../../../../Utils/dates';
+import { MiniCalendarModel } from '../../../../Models/MiniCalendarModel';
 import { Component } from '../../../Component';
 import { MiniCalGridRow } from './MiniCalGridRow';
 

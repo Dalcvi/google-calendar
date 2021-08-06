@@ -1,4 +1,4 @@
-import { getMonthName, getMonthTitle } from '../Utils/dates';
+import { getFirstDayOfWeek, getMonthTitle } from '../Utils/dates';
 import { Model } from './Model';
 
 export interface CalendarProps {
@@ -27,7 +27,7 @@ export class CalendarModel extends Model<CalendarProps> {
   };
 
   getCurrentMonthTitle(): string {
-    return getMonthTitle(this.getCurrentWeek());
+    return getMonthTitle(getFirstDayOfWeek(this.getCurrentWeek()));
   }
 
   getCurrentWeek(): Date {
@@ -46,5 +46,9 @@ export class CalendarModel extends Model<CalendarProps> {
     );
 
     return currentWeekDate;
+  }
+
+  getCurrentWeekStart(): Date {
+    return getFirstDayOfWeek(this.getCurrentWeek());
   }
 }

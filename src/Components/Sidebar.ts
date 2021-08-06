@@ -1,6 +1,4 @@
 import { store } from '..';
-import { CalendarModel } from '../Models/CalendarModel';
-import { Model } from '../Models/Model';
 import { SidebarModel } from '../Models/SidebarModel';
 import { Component, RegionsMap } from './Component';
 import { MiniCalendar } from './Mini Calendar/MiniCalendar';
@@ -22,19 +20,21 @@ export class Sidebar extends Component {
 
   createRegionsMap(): RegionsMap {
     return {
-      eventButtonContainer: '.event-button--container',
       miniCalendar: '.mini-calendar',
     };
   }
 
   template(): string {
     return `
-    <div class="event-button--container"></div>
     <section class="mini-calendar"></section>
     `;
   }
 
   onRender(): void {
+    if (!this.isElement(this.regions.miniCalendar)) {
+      return;
+    }
+
     new MiniCalendar(this.regions.miniCalendar).render();
   }
 

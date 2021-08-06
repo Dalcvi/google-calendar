@@ -39,7 +39,9 @@ export class Header extends Component {
             data-main-action="right"
           ></button>
         </div>
-        <h2 class="header__month-title">${this.calendarModel.getCurrentMonthTitle()}</h2>
+        <h2 class="header__month-title">
+          ${this.calendarModel.getCurrentMonthTitle()}
+        </h2>
         <button class="btn-regular header__view-button">Week</button>
         `;
   }

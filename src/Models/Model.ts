@@ -1,4 +1,4 @@
-export type Callback = () => void;
+export type Callback = (event?: Event) => void;
 type Events = { [key: string]: Callback[] };
 
 export class Model<T = {}> {

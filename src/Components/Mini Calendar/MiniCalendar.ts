@@ -1,8 +1,5 @@
 import { store } from '../..';
-import {
-  MiniCalendarModel,
-  MiniCalendarProps,
-} from '../../Models/MiniCalendarModel';
+import { MiniCalendarModel } from '../../Models/MiniCalendarModel';
 import { Component } from '../Component';
 import { MiniCalGrid } from './Mini Calendar Grid/MiniCalGrid';
 import { MiniCalHeader } from './MiniCalHeader';

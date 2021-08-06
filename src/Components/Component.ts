@@ -1,5 +1,4 @@
 import { Model, Callback } from '../Models/Model';
-import { Store } from '../Models/Store';
 
 export type EventsMap = { [key: string]: Callback[] };
 export type RegionsMap = { [key: string]: string };

@@ -1,8 +1,5 @@
 import { store } from '../..';
-import {
-  MiniCalendarModel,
-  MiniCalendarProps,
-} from '../../Models/MiniCalendarModel';
+import { MiniCalendarModel } from '../../Models/MiniCalendarModel';
 import { Component, EventsMap } from '../Component';
 
 export class MiniCalHeader extends Component {

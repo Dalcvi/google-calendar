@@ -1,4 +1,4 @@
-import { getFirstDayOfWeek, getMonthName, getMonthTitle } from '../Utils/dates';
+import { getFirstDayOfWeek, getMonthName } from '../Utils/dates';
 import { Model } from './Model';
 
 export interface MiniCalendarProps {

@@ -1,10 +1,6 @@
 import { store } from '../../../..';
 import { MiniCalendarModel } from '../../../../Models/MiniCalendarModel';
-import {
-  areDatesTheSame,
-  getMonthName,
-  isTheSameMonth,
-} from '../../../../Utils/dates';
+import { areDatesTheSame, isTheSameMonth } from '../../../../Utils/dates';
 import { Component } from '../../../Component';
 
 export class MiniCalGridCell extends Component {

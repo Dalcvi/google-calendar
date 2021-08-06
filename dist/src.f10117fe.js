@@ -251,10 +251,11 @@ exports.Component = Component;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isTheSameMonth = exports.areDatesTheSame = exports.getFirstDayOfWeek = exports.getMonthTitle = exports.getMonthName = void 0;
+exports.getFullDate = exports.calculateDayDifference = exports.getTimeString = exports.getDateString = exports.getWeekdayName = exports.isTheSameMonth = exports.areDatesTheSame = exports.getFirstDayOfWeek = exports.getMonthTitle = exports.getMonthName = void 0;
+var intl = new Intl.DateTimeFormat('lt-LT');
 
 var getMonthName = function getMonthName(date) {
-  return date.toLocaleString('default', {
+  return date.toLocaleString('en-LT', {
     month: 'long'
   });
 };
@@ -280,7 +281,7 @@ var getFirstDayOfWeek = function getFirstDayOfWeek(week) {
 exports.getFirstDayOfWeek = getFirstDayOfWeek;
 
 var areDatesTheSame = function areDatesTheSame(firstDate, secondDate) {
-  return new Intl.DateTimeFormat('en-us').format(firstDate) === new Intl.DateTimeFormat('en-us').format(secondDate);
+  return intl.format(firstDate) === intl.format(secondDate);
 };
 
 exports.areDatesTheSame = areDatesTheSame;
@@ -290,6 +291,53 @@ var isTheSameMonth = function isTheSameMonth(firstDate, secondDate) {
 };
 
 exports.isTheSameMonth = isTheSameMonth;
+
+var getWeekdayName = function getWeekdayName(dayId) {
+  var weekdays = {
+    0: 'Sunday',
+    1: 'Monday',
+    2: 'Tuesday',
+    3: 'Wednesday',
+    4: 'Thursday',
+    5: 'Friday',
+    6: 'Saturday'
+  };
+  return weekdays[dayId];
+};
+
+exports.getWeekdayName = getWeekdayName;
+
+var getDateString = function getDateString(date) {
+  return intl.format(date);
+};
+
+exports.getDateString = getDateString;
+
+var getTimeString = function getTimeString(date) {
+  return new Intl.DateTimeFormat('en-LT', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false
+  }).format(date);
+};
+
+exports.getTimeString = getTimeString;
+
+var calculateDayDifference = function calculateDayDifference(date1, date2) {
+  var dayInMiliseconds = 86400000;
+  var date1WithoutHours = new Date(exports.getDateString(date1));
+  var date2WithoutHours = new Date(exports.getDateString(date2));
+  return (date2WithoutHours.getTime() - date1WithoutHours.getTime()) / dayInMiliseconds;
+};
+
+exports.calculateDayDifference = calculateDayDifference;
+
+var getFullDate = function getFullDate(date, hours) {
+  console.log(date, hours);
+  return new Date("".concat(date, " ").concat(hours));
+};
+
+exports.getFullDate = getFullDate;
 },{}],"src/Components/Mini Calendar/Mini Calendar Grid/MiniCalGridCells/MiniCalGridCell.ts":[function(require,module,exports) {
 "use strict";
 
@@ -914,18 +962,21 @@ var Sidebar = /*#__PURE__*/function (_Component_1$Componen) {
     key: "createRegionsMap",
     value: function createRegionsMap() {
       return {
-        eventButtonContainer: '.event-button--container',
         miniCalendar: '.mini-calendar'
       };
     }
   }, {
     key: "template",
     value: function template() {
-      return "\n    <div class=\"event-button--container\"></div>\n    <section class=\"mini-calendar\"></section>\n    ";
+      return "\n    <section class=\"mini-calendar\"></section>\n    ";
     }
   }, {
     key: "onRender",
     value: function onRender() {
+      if (!this.isElement(this.regions.miniCalendar)) {
+        return;
+      }
+
       new MiniCalendar_1.MiniCalendar(this.regions.miniCalendar).render();
     }
   }]);
@@ -992,7 +1043,7 @@ var Header = /*#__PURE__*/function (_Component_1$Componen) {
   _createClass(Header, [{
     key: "template",
     value: function template() {
-      return "\n        <button class=\"hamburger\"></button>\n        <h1 class=\"header__title\">Calendar</h1>\n        <button class=\"btn-regular header__today\" data-main-action=\"today\">\n          Today\n        </button>\n        <div class=\"header__movement-buttons\">\n          <button\n            class=\"btn header__movement-button left-arrow\"\n            data-main-action=\"left\"\n          ></button>\n          <button\n            class=\"btn header__movement-button right-arrow\"\n            data-main-action=\"right\"\n          ></button>\n        </div>\n        <h2 class=\"header__month-title\">".concat(this.calendarModel.getCurrentMonthTitle(), "</h2>\n        <button class=\"btn-regular header__view-button\">Week</button>\n        ");
+      return "\n        <button class=\"hamburger\"></button>\n        <h1 class=\"header__title\">Calendar</h1>\n        <button class=\"btn-regular header__today\" data-main-action=\"today\">\n          Today\n        </button>\n        <div class=\"header__movement-buttons\">\n          <button\n            class=\"btn header__movement-button left-arrow\"\n            data-main-action=\"left\"\n          ></button>\n          <button\n            class=\"btn header__movement-button right-arrow\"\n            data-main-action=\"right\"\n          ></button>\n        </div>\n        <h2 class=\"header__month-title\">\n          ".concat(this.calendarModel.getCurrentMonthTitle(), "\n        </h2>\n        <button class=\"btn-regular header__view-button\">Week</button>\n        ");
     }
   }, {
     key: "createEventsMap",
@@ -1021,8 +1072,10 @@ var Header = /*#__PURE__*/function (_Component_1$Componen) {
 }(Component_1.Component);
 
 exports.Header = Header;
-},{"../":"src/index.ts","./Component":"src/Components/Component.ts"}],"src/App.ts":[function(require,module,exports) {
+},{"../":"src/index.ts","./Component":"src/Components/Component.ts"}],"src/Components/Calendar/Events/CalendarEvent.ts":[function(require,module,exports) {
 "use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1030,49 +1083,825 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.App = void 0; // import { Header } from './Components/Header';
-// import { MiniCalendar } from './Components/Mini Calendar/MiniCalendar';
+exports.CalendarEvent = void 0;
 
-var Sidebar_1 = require("./Components/Sidebar");
+var dates_1 = require("../../../Utils/dates");
 
-var Header_1 = require("./Components/Header");
+var Component_1 = require("../../Component");
 
-var App = /*#__PURE__*/function () {
-  function App() {
-    _classCallCheck(this, App);
+var CalendarEvent = /*#__PURE__*/function (_Component_1$Componen) {
+  _inherits(CalendarEvent, _Component_1$Componen);
 
-    this.header = new Header_1.Header(this.getElement('.header'));
-    this.sidebar = new Sidebar_1.Sidebar(this.getElement('.sidebar'));
-    this.render();
+  var _super = _createSuper(CalendarEvent);
+
+  function CalendarEvent(parentElement, eventModel, firstWeekDayDate) {
+    var _this;
+
+    _classCallCheck(this, CalendarEvent);
+
+    _this = _super.call(this, parentElement);
+    _this.eventModel = eventModel;
+    _this.firstWeekDayDate = firstWeekDayDate;
+    return _this;
   }
 
-  _createClass(App, [{
-    key: "getElement",
-    value: function getElement(selector) {
-      var element = document.querySelector(selector);
-
-      if (!element) {
-        throw new Error("Element by selector: ".concat(selector, " is missing!"));
-      }
-
-      return element;
+  _createClass(CalendarEvent, [{
+    key: "template",
+    value: function template() {
+      var eventElementsStrings = this.createTemplateStrings();
+      return "\n        ".concat(eventElementsStrings, "\n    ");
     }
   }, {
-    key: "render",
-    value: function render() {
-      this.header.render();
-      this.sidebar.render();
+    key: "createTemplateStrings",
+    value: function createTemplateStrings() {
+      var lastWeekDayDate = new Date(this.firstWeekDayDate);
+      lastWeekDayDate.setDate(lastWeekDayDate.getDate() + 6);
+      var positionsThisWeek = this.eventModel.getPositionsInRange(this.firstWeekDayDate, lastWeekDayDate);
+      var positions = this.eventModel.get('positions') || {};
+      var oneColumnWidth = 100 / 7;
+      console.log();
+      var eventElementsStrings = '';
+      var eventTextElementString = "<p>\n    <strong>".concat(this.eventModel.get('title'), "</strong>,\n    ").concat(this.eventModel.get('description'), "\n    </p>\n    ");
+
+      for (var date in positionsThisWeek) {
+        var daysSinceSunday = dates_1.calculateDayDifference(this.firstWeekDayDate, new Date(date));
+        var minutesInADay = 24 * 60;
+        var positionByDate = positions[date] || {
+          top: 0,
+          height: 0
+        };
+
+        if (minutesInADay - positionByDate.top < 24) {
+          positionByDate.top = minutesInADay - 24;
+          positionByDate.height = 24;
+        }
+
+        console.log(positionByDate.height / minutesInADay);
+        var eventElementString = "<div class=\"calendar__event\" style=\"\n        top: ".concat(positionByDate.top / minutesInADay * 100, "%;\n        height: ").concat(positionByDate.height / minutesInADay * 100, "%;\n        left:calc(100%/7 * ").concat(daysSinceSunday, ");\n        width:calc(100%/7 - 15px);\">\n          ").concat(eventTextElementString, "\n        </div>");
+        eventElementsStrings += eventElementString;
+        eventTextElementString = '';
+      }
+
+      return eventElementsStrings;
     }
   }]);
 
-  return App;
-}();
+  return CalendarEvent;
+}(Component_1.Component);
 
-exports.App = App;
-},{"./Components/Sidebar":"src/Components/Sidebar.ts","./Components/Header":"src/Components/Header.ts"}],"src/Models/Model.ts":[function(require,module,exports) {
+exports.CalendarEvent = CalendarEvent;
+},{"../../../Utils/dates":"src/Utils/dates.ts","../../Component":"src/Components/Component.ts"}],"src/Components/Calendar/Events/CalendarEventContainer.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CalendarEventContainer = void 0;
+
+var __1 = require("../../..");
+
+var Component_1 = require("../../Component");
+
+var CalendarEvent_1 = require("./CalendarEvent");
+
+var CalendarEventContainer = /*#__PURE__*/function (_Component_1$Componen) {
+  _inherits(CalendarEventContainer, _Component_1$Componen);
+
+  var _super = _createSuper(CalendarEventContainer);
+
+  function CalendarEventContainer(parentElement) {
+    var _this;
+
+    _classCallCheck(this, CalendarEventContainer);
+
+    _this = _super.call(this, parentElement);
+    _this.eventsModel = __1.store.events;
+    _this.calendarModel = __1.store.calendar;
+
+    _this.bindModel(_this.eventsModel);
+
+    _this.bindModel(_this.calendarModel);
+
+    _this.currentWeekEvents = [];
+    _this.regionsMap = _this.createRegionsMap();
+    return _this;
+  }
+
+  _createClass(CalendarEventContainer, [{
+    key: "template",
+    value: function template() {
+      console.log('test');
+      this.currentWeekEvents = this.getThisWeeksEvents();
+      var eventElementString = '<div class="event"></div>';
+      var eventElementsStrings = '';
+      this.currentWeekEvents.forEach(function () {
+        eventElementsStrings += eventElementString;
+      });
+      return "\n        ".concat(eventElementsStrings, "\n    ");
+    }
+  }, {
+    key: "createRegionsMap",
+    value: function createRegionsMap() {
+      return {
+        events: '.event'
+      };
+    }
+  }, {
+    key: "mapRegions",
+    value: function mapRegions(fragment) {
+      for (var key in this.regionsMap) {
+        var selector = this.regionsMap[key];
+        var elements = fragment.querySelectorAll(selector);
+
+        if (elements) {
+          this.regions[key] = elements;
+        }
+      }
+    }
+  }, {
+    key: "onRender",
+    value: function onRender() {
+      var _this2 = this;
+
+      if (!this.isListOfElements(this.regions.events)) {
+        return;
+      }
+
+      this.regions.events.forEach(function (element, index) {
+        new CalendarEvent_1.CalendarEvent(element, _this2.currentWeekEvents[index], _this2.calendarModel.getCurrentWeekStart()).render();
+      });
+    }
+  }, {
+    key: "getThisWeeksEvents",
+    value: function getThisWeeksEvents() {
+      var events = this.eventsModel.get('events');
+
+      if (!events) {
+        return [];
+      }
+
+      var weekStart = this.calendarModel.getCurrentWeekStart();
+      var weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      return events.filter(function (event) {
+        return event.isEventIntersectingDates(weekStart, weekEnd);
+      });
+    }
+  }]);
+
+  return CalendarEventContainer;
+}(Component_1.Component);
+
+exports.CalendarEventContainer = CalendarEventContainer;
+},{"../../..":"src/index.ts","../../Component":"src/Components/Component.ts","./CalendarEvent":"src/Components/Calendar/Events/CalendarEvent.ts"}],"src/Components/Calendar/Calendar Grid/CalendarGrid.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CalendarGrid = void 0;
+
+var Component_1 = require("../../Component");
+
+var CalendarGrid = /*#__PURE__*/function (_Component_1$Componen) {
+  _inherits(CalendarGrid, _Component_1$Componen);
+
+  var _super = _createSuper(CalendarGrid);
+
+  function CalendarGrid() {
+    _classCallCheck(this, CalendarGrid);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(CalendarGrid, [{
+    key: "template",
+    value: function template() {
+      var cellElementString = "<li class=\"calendar-grid__cell\"></li>";
+      var daysInAWeek = 7;
+      var hoursInADay = 24;
+      var cellElementsStrings = '';
+
+      for (var i = 0; i < daysInAWeek * hoursInADay; i++) {
+        cellElementsStrings += cellElementString;
+      }
+
+      return cellElementsStrings;
+    }
+  }]);
+
+  return CalendarGrid;
+}(Component_1.Component);
+
+exports.CalendarGrid = CalendarGrid;
+},{"../../Component":"src/Components/Component.ts"}],"src/Components/Calendar/Calendar Grid/CalendarHours.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CalendarHours = void 0;
+
+var Component_1 = require("../../Component");
+
+var CalendarHours = /*#__PURE__*/function (_Component_1$Componen) {
+  _inherits(CalendarHours, _Component_1$Componen);
+
+  var _super = _createSuper(CalendarHours);
+
+  function CalendarHours(parentElement) {
+    var _this;
+
+    _classCallCheck(this, CalendarHours);
+
+    _this = _super.call(this, parentElement);
+    _this.regionsMap = {
+      CalendarHours: '.calendar__hour-cells',
+      CalendarGrid: '.calendar-grid'
+    };
+    return _this;
+  }
+
+  _createClass(CalendarHours, [{
+    key: "template",
+    value: function template() {
+      var shownHoursAmount = 23;
+      var cellElementsStrings = '';
+
+      for (var i = 1; i <= shownHoursAmount; i++) {
+        var hour = this.convert24HourClockTimeTo12String(i);
+        var hourCellElementString = "<li class=\"calendar__hour-cell\">\n                                      <span class=\"calendar__hour-text\">".concat(hour, "</span>\n                                    </li>");
+        cellElementsStrings += hourCellElementString;
+      }
+
+      return "\n        <ul class=\"calendar__hour-cells-container\">\n        ".concat(cellElementsStrings, "\n        </ul>\n    ");
+    }
+  }, {
+    key: "convert24HourClockTimeTo12String",
+    value: function convert24HourClockTimeTo12String(hour) {
+      var date = new Date();
+      date.setHours(hour);
+      var options = {
+        hour: 'numeric',
+        hour12: true
+      };
+      return new Intl.DateTimeFormat('en-LT', options).format(date);
+    }
+  }, {
+    key: "onRender",
+    value: function onRender() {
+      if (!this.isElement(this.regions.CalendarHours) || !this.isElement(this.regions.CalendarGrid)) {
+        return;
+      }
+
+      new CalendarHours(this.regions.CalendarHours).render(); // new MiniCalGrid(this.regions.miniCalGrid).render();
+    }
+  }]);
+
+  return CalendarHours;
+}(Component_1.Component);
+
+exports.CalendarHours = CalendarHours;
+},{"../../Component":"src/Components/Component.ts"}],"src/Components/Calendar/Calendar Grid/CalendarGridContainer.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CalendarGridContainer = void 0;
+
+var Component_1 = require("../../Component");
+
+var CalendarEventContainer_1 = require("../Events/CalendarEventContainer");
+
+var CalendarGrid_1 = require("./CalendarGrid");
+
+var CalendarHours_1 = require("./CalendarHours");
+
+var CalendarGridContainer = /*#__PURE__*/function (_Component_1$Componen) {
+  _inherits(CalendarGridContainer, _Component_1$Componen);
+
+  var _super = _createSuper(CalendarGridContainer);
+
+  function CalendarGridContainer(parentElement) {
+    var _this;
+
+    _classCallCheck(this, CalendarGridContainer);
+
+    _this = _super.call(this, parentElement);
+    _this.regionsMap = {
+      CalendarHours: '.calendar__hour-cells',
+      CalendarGrid: '.calendar-grid',
+      CalendarEventContainer: '.calendar-event-container'
+    };
+    return _this;
+  }
+
+  _createClass(CalendarGridContainer, [{
+    key: "template",
+    value: function template() {
+      return "\n    <aside class=\"calendar__hour-cells\"></aside>\n    <div class=\"calendar-grid-container\">\n        <ul class=\"calendar-grid\"></ul>\n        <div class=\"calendar-event-container\"></div>\n    </div>\n    ";
+    }
+  }, {
+    key: "onRender",
+    value: function onRender() {
+      if (!this.isElement(this.regions.CalendarHours) || !this.isElement(this.regions.CalendarGrid) || !this.isElement(this.regions.CalendarEventContainer)) {
+        return;
+      }
+
+      new CalendarHours_1.CalendarHours(this.regions.CalendarHours).render();
+      new CalendarGrid_1.CalendarGrid(this.regions.CalendarGrid).render();
+      new CalendarEventContainer_1.CalendarEventContainer(this.regions.CalendarEventContainer).render();
+    }
+  }]);
+
+  return CalendarGridContainer;
+}(Component_1.Component);
+
+exports.CalendarGridContainer = CalendarGridContainer;
+},{"../../Component":"src/Components/Component.ts","../Events/CalendarEventContainer":"src/Components/Calendar/Events/CalendarEventContainer.ts","./CalendarGrid":"src/Components/Calendar/Calendar Grid/CalendarGrid.ts","./CalendarHours":"src/Components/Calendar/Calendar Grid/CalendarHours.ts"}],"src/Components/Calendar/Calendar Header/CalendarHeaderCell.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CalendarHeaderCell = void 0;
+
+var __1 = require("../../..");
+
+var dates_1 = require("../../../Utils/dates");
+
+var Component_1 = require("../../Component");
+
+var CalendarHeaderCell = /*#__PURE__*/function (_Component_1$Componen) {
+  _inherits(CalendarHeaderCell, _Component_1$Componen);
+
+  var _super = _createSuper(CalendarHeaderCell);
+
+  function CalendarHeaderCell(parentElement, dayId) {
+    var _this;
+
+    _classCallCheck(this, CalendarHeaderCell);
+
+    _this = _super.call(this, parentElement);
+    _this.dayId = dayId;
+    _this.calendarModel = __1.store.calendar;
+
+    _this.bindModel(_this.calendarModel);
+
+    _this.regionsMap = {
+      cellDayName: '.calendar__top-cell-day',
+      cellDayNumber: '.calendar__top-cell-day-number'
+    };
+    return _this;
+  }
+
+  _createClass(CalendarHeaderCell, [{
+    key: "template",
+    value: function template() {
+      return "\n            <p class=\"calendar__top-cell-day\">".concat(dates_1.getWeekdayName(this.dayId).substr(0, 3), "</p>\n            <p class=\"calendar__top-cell-day-number\">").concat(this.getDayNumber(), "</p>\n    ");
+    }
+  }, {
+    key: "getDayNumber",
+    value: function getDayNumber() {
+      return this.getDayDate().getDate();
+    }
+  }, {
+    key: "getDayDate",
+    value: function getDayDate() {
+      var date = dates_1.getFirstDayOfWeek(this.calendarModel.getCurrentWeek());
+      date.setDate(date.getDate() + this.dayId);
+      return date;
+    }
+  }, {
+    key: "onRender",
+    value: function onRender() {
+      var today = this.calendarModel.get('today');
+
+      if (!this.isElement(this.regions.cellDayName) || !this.isElement(this.regions.cellDayNumber) || !today) {
+        return;
+      }
+
+      var isDateToday = dates_1.areDatesTheSame(this.getDayDate(), today);
+      this.regions.cellDayName.classList.toggle('calendar__top-cell--colored', isDateToday);
+      this.regions.cellDayNumber.classList.toggle('calendar__top-cell--colored-circle', isDateToday);
+    }
+  }]);
+
+  return CalendarHeaderCell;
+}(Component_1.Component);
+
+exports.CalendarHeaderCell = CalendarHeaderCell;
+},{"../../..":"src/index.ts","../../../Utils/dates":"src/Utils/dates.ts","../../Component":"src/Components/Component.ts"}],"src/Components/Calendar/Calendar Header/CalendarHeader.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CalendarHeader = void 0;
+
+var Component_1 = require("../../Component");
+
+var CalendarHeaderCell_1 = require("./CalendarHeaderCell");
+
+var CalendarHeader = /*#__PURE__*/function (_Component_1$Componen) {
+  _inherits(CalendarHeader, _Component_1$Componen);
+
+  var _super = _createSuper(CalendarHeader);
+
+  function CalendarHeader(parentElement) {
+    var _this;
+
+    _classCallCheck(this, CalendarHeader);
+
+    _this = _super.call(this, parentElement);
+    _this.regionsMap = {
+      CalendarHeaderCell: '.calendar__top-cell'
+    };
+    return _this;
+  }
+
+  _createClass(CalendarHeader, [{
+    key: "template",
+    value: function template() {
+      var headerCellElementString = '<li class="calendar__top-cell"></li>';
+      var daysInAWeek = 7;
+      var cellElementsStrings = '';
+
+      for (var i = 0; i < daysInAWeek; i++) {
+        cellElementsStrings += headerCellElementString;
+      }
+
+      return "\n            <aside class=\"calendar__top-hour-cell\">\n              <span class=\"text--size-small text--color-secondary\">gmt+03</span>\n            </aside>\n            <ul\n              class=\"calendar__top-cells list-s-type-none text--color-secondary\"\n            >\n              ".concat(cellElementsStrings, "\n            </ul>\n    ");
+    }
+  }, {
+    key: "mapRegions",
+    value: function mapRegions(fragment) {
+      for (var key in this.regionsMap) {
+        var selector = this.regionsMap[key];
+        var elements = fragment.querySelectorAll(selector);
+
+        if (elements) {
+          this.regions[key] = elements;
+        }
+      }
+    }
+  }, {
+    key: "onRender",
+    value: function onRender() {
+      if (!this.isListOfElements(this.regions.CalendarHeaderCell)) {
+        return;
+      }
+
+      this.regions.CalendarHeaderCell.forEach(function (element, index) {
+        new CalendarHeaderCell_1.CalendarHeaderCell(element, index).render();
+      }); // new MiniCalGrid(this.regions.miniCalGrid).render();
+    }
+  }]);
+
+  return CalendarHeader;
+}(Component_1.Component);
+
+exports.CalendarHeader = CalendarHeader;
+},{"../../Component":"src/Components/Component.ts","./CalendarHeaderCell":"src/Components/Calendar/Calendar Header/CalendarHeaderCell.ts"}],"src/Components/Calendar/Calendar.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Calendar = void 0;
+
+var Component_1 = require("../Component");
+
+var CalendarGridContainer_1 = require("./Calendar Grid/CalendarGridContainer");
+
+var CalendarHeader_1 = require("./Calendar Header/CalendarHeader");
+
+var Calendar = /*#__PURE__*/function (_Component_1$Componen) {
+  _inherits(Calendar, _Component_1$Componen);
+
+  var _super = _createSuper(Calendar);
+
+  function Calendar(parentElement) {
+    var _this;
+
+    _classCallCheck(this, Calendar);
+
+    _this = _super.call(this, parentElement);
+    _this.regionsMap = {
+      CalendarHeader: '.calendar__top',
+      CalendarContainer: '.calendar__container'
+    };
+    return _this;
+  }
+
+  _createClass(Calendar, [{
+    key: "template",
+    value: function template() {
+      return "\n    <header class=\"calendar__top\"></header>\n    <div class=\"calendar__container\"></div>\n    ";
+    }
+  }, {
+    key: "onRender",
+    value: function onRender() {
+      if (!this.isElement(this.regions.CalendarHeader) || !this.isElement(this.regions.CalendarContainer)) {
+        return;
+      }
+
+      new CalendarHeader_1.CalendarHeader(this.regions.CalendarHeader).render();
+      new CalendarGridContainer_1.CalendarGridContainer(this.regions.CalendarContainer).render();
+    }
+  }]);
+
+  return Calendar;
+}(Component_1.Component);
+
+exports.Calendar = Calendar;
+},{"../Component":"src/Components/Component.ts","./Calendar Grid/CalendarGridContainer":"src/Components/Calendar/Calendar Grid/CalendarGridContainer.ts","./Calendar Header/CalendarHeader":"src/Components/Calendar/Calendar Header/CalendarHeader.ts"}],"src/Components/EventButton.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.EventButton = void 0;
+
+var __1 = require("..");
+
+var Component_1 = require("./Component");
+
+var EventButton = /*#__PURE__*/function (_Component_1$Componen) {
+  _inherits(EventButton, _Component_1$Componen);
+
+  var _super = _createSuper(EventButton);
+
+  function EventButton(parentElement) {
+    var _this;
+
+    _classCallCheck(this, EventButton);
+
+    _this = _super.call(this, parentElement);
+    _this.modalModel = __1.store.modal;
+
+    __1.store.sidebar.addEvent('toggle', _this.toggleShrinkage.bind(_assertThisInitialized(_this)));
+
+    _this.modalModel.addEvent('change', _this.toggleDisabled.bind(_assertThisInitialized(_this)));
+
+    _this.eventsMap = _this.createEventsMap();
+    _this.regionsMap = _this.createRegionsMap();
+    return _this;
+  }
+
+  _createClass(EventButton, [{
+    key: "template",
+    value: function template() {
+      return "\n        <button class=\"btn-round event-btn\">Create Event</button>\n        ";
+    }
+  }, {
+    key: "createEventsMap",
+    value: function createEventsMap() {
+      return {
+        'click:.event-btn': [this.showModal.bind(this)]
+      };
+    }
+  }, {
+    key: "createRegionsMap",
+    value: function createRegionsMap() {
+      return {
+        eventButton: '.event-btn'
+      };
+    }
+  }, {
+    key: "showModal",
+    value: function showModal() {
+      if (!this.isElement(this.regions.eventButton)) {
+        return;
+      }
+
+      var rect = this.regions.eventButton.getBoundingClientRect();
+      var top = rect.top + 'px';
+      var left = rect.right + 10 + 'px';
+      this.modalModel.show({
+        top: top,
+        left: left
+      });
+    }
+  }, {
+    key: "toggleShrinkage",
+    value: function toggleShrinkage() {
+      if (!this.isElement(this.regions.eventButton)) {
+        return;
+      }
+
+      this.regions.eventButton.classList.toggle('event-btn--circle');
+    }
+  }, {
+    key: "toggleDisabled",
+    value: function toggleDisabled() {
+      if (!this.isElement(this.regions.eventButton)) {
+        return;
+      }
+
+      this.regions.eventButton.classList.toggle('event-btn--disabled', this.modalModel.get('isOpen'));
+    }
+  }]);
+
+  return EventButton;
+}(Component_1.Component);
+
+exports.EventButton = EventButton;
+},{"..":"src/index.ts","./Component":"src/Components/Component.ts"}],"src/Models/Model.ts":[function(require,module,exports) {
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1131,7 +1960,584 @@ var Model = /*#__PURE__*/function () {
 }();
 
 exports.Model = Model;
-},{}],"src/Models/CalendarModel.ts":[function(require,module,exports) {
+},{}],"src/Models/EventModel.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.EventModel = void 0;
+
+var dates_1 = require("../Utils/dates");
+
+var Model_1 = require("./Model");
+
+var EventModel = /*#__PURE__*/function (_Model_1$Model) {
+  _inherits(EventModel, _Model_1$Model);
+
+  var _super = _createSuper(EventModel);
+
+  function EventModel(title, startingDate, endingDate, description) {
+    var _this;
+
+    _classCallCheck(this, EventModel);
+
+    _this = _super.call(this, {
+      title: title,
+      startingDate: startingDate,
+      endingDate: endingDate,
+      description: description
+    });
+    Object.assign(_this.data, {
+      positions: _this.getPositionsByDay(_this.data.startingDate, _this.data.endingDate)
+    });
+    return _this;
+  }
+
+  _createClass(EventModel, [{
+    key: "isEventIntersectingDates",
+    value: function isEventIntersectingDates(dateStart, dateEnd) {
+      return this.data.startingDate <= dateEnd && this.data.endingDate >= dateStart;
+    }
+  }, {
+    key: "getPositionsInRange",
+    value: function getPositionsInRange(startingDate, endingDate) {
+      if (!this.data.positions) {
+        return {};
+      }
+
+      var positionsInRange = {};
+
+      for (var date = new Date(startingDate); date <= endingDate; date.setDate(date.getDate() + 1)) {
+        var stringDate = dates_1.getDateString(date);
+
+        if (this.data.positions[stringDate]) {
+          positionsInRange[stringDate] = this.data.positions[stringDate];
+        }
+      }
+
+      return positionsInRange;
+    }
+  }, {
+    key: "getPositionsByDay",
+    value: function getPositionsByDay(startingDate, endingDate) {
+      var date = new Date(startingDate);
+      var positions = {};
+      var fullHeight = this.getMinutesBetweenDates(endingDate, startingDate);
+
+      if (fullHeight === 0) {
+        fullHeight = 1;
+      }
+
+      var minutesFromTop = startingDate.getHours() * 60 + startingDate.getMinutes();
+
+      while (fullHeight > 0) {
+        var dayHeight = this.getDayHeight(minutesFromTop, fullHeight);
+        positions[dates_1.getDateString(date)] = {
+          top: minutesFromTop,
+          height: dayHeight
+        };
+        minutesFromTop = 0;
+        date.setDate(date.getDate() + 1);
+        fullHeight -= dayHeight;
+      }
+
+      return positions;
+    }
+  }, {
+    key: "getMinutesBetweenDates",
+    value: function getMinutesBetweenDates(date1, date2) {
+      return (date1.getTime() - date2.getTime()) / 60000;
+    }
+  }, {
+    key: "getDayHeight",
+    value: function getDayHeight(fromTop, height) {
+      var pixelsInDay = 24 * 60;
+
+      if (pixelsInDay - fromTop - height > 0) {
+        return height;
+      }
+
+      return pixelsInDay - fromTop;
+    }
+  }], [{
+    key: "fromJsonObject",
+    value: function fromJsonObject(jsonObject) {
+      console.log(jsonObject);
+      return new EventModel(jsonObject.data.title, new Date(jsonObject.data.startingDate), new Date(jsonObject.data.endingDate), jsonObject.data.description);
+    }
+  }]);
+
+  return EventModel;
+}(Model_1.Model);
+
+exports.EventModel = EventModel;
+},{"../Utils/dates":"src/Utils/dates.ts","./Model":"src/Models/Model.ts"}],"src/Utils/debounce.ts":[function(require,module,exports) {
+"use strict";
+
+var _this = this;
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.debounce = void 0;
+
+var debounce = function debounce(func, delay) {
+  var debounceTimer;
+  return function () {
+    var context = _this;
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function () {
+      return func.apply(context);
+    }, delay);
+  };
+};
+
+exports.debounce = debounce;
+},{}],"src/Services/localSession.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.saveEvents = exports.fetchEvents = void 0;
+
+var EventModel_1 = require("../Models/EventModel");
+
+var eventsKey = 'events';
+
+var fetchEvents = function fetchEvents() {
+  var _a;
+
+  var JSONevents = (_a = window.localStorage.getItem(eventsKey)) !== null && _a !== void 0 ? _a : '';
+  var eventsArray = [];
+  JSON.parse(JSONevents).forEach(function (object) {
+    eventsArray.push(EventModel_1.EventModel.fromJsonObject(object));
+  });
+  return eventsArray;
+};
+
+exports.fetchEvents = fetchEvents;
+
+var saveEvents = function saveEvents(eventsModel) {
+  window.localStorage.setItem(eventsKey, JSON.stringify(eventsModel.get('events')));
+};
+
+exports.saveEvents = saveEvents;
+},{"../Models/EventModel":"src/Models/EventModel.ts"}],"src/Components/Modal/ModalForm.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ModalForm = void 0;
+
+var __1 = require("../..");
+
+var EventModel_1 = require("../../Models/EventModel");
+
+var dates_1 = require("../../Utils/dates");
+
+var Component_1 = require("../Component");
+
+var debounce_1 = require("../../Utils/debounce");
+
+var localSession_1 = require("../../Services/localSession");
+
+var ModalForm = /*#__PURE__*/function (_Component_1$Componen) {
+  _inherits(ModalForm, _Component_1$Componen);
+
+  var _super = _createSuper(ModalForm);
+
+  function ModalForm(parentElement) {
+    var _this;
+
+    _classCallCheck(this, ModalForm);
+
+    _this = _super.call(this, parentElement);
+    _this.modalModel = __1.store.modal;
+
+    _this.bindModel(_this.modalModel);
+
+    _this.eventsMap = _this.createEventsMap();
+    return _this;
+  }
+
+  _createClass(ModalForm, [{
+    key: "template",
+    value: function template() {
+      return "\n        <input\n              name=\"title\"\n              class=\"modal-form__title-input\"\n              type=\"text\"\n              placeholder=\"Add title\"\n              required\n            />\n            <ul class=\"list-s-type-none\">\n              <li class=\"list--custom-icon mg-t-10\">\n                <input\n                  name=\"starting-date\"\n                  class=\"input\"\n                  id=\"starting-date\"\n                  value=\"".concat(dates_1.getDateString(new Date()), "\"\n                  type=\"date\"\n                  required\n                />\n                <input\n                  name=\"starting-hour\"\n                  class=\"input-text input--short input\"\n                  id=\"starting-hour\"\n                  value=\"").concat(dates_1.getTimeString(new Date()), "\"\n                  type=\"time\"\n                  required\n                />\n              </li>\n              <li class=\"list--custom-icon\">\n                <input\n                  name=\"ending-date\"\n                  class=\"input\"\n                  id=\"ending-date\"\n                  value=\"").concat(dates_1.getDateString(new Date()), "\"\n                  type=\"date\"\n                  required\n                />\n                <input\n                  name=\"ending-hour\"\n                  class=\"input-text input--short input\"\n                  id=\"ending-hour\"\n                  value=\"").concat(dates_1.getTimeString(new Date()), "\"\n                  type=\"time\"\n                  required\n                />\n              </li>\n              <li class=\"list--custom-icon\">\n                <textarea\n                  name=\"description\"\n                  placeholder=\"Description\"\n                  class=\"modal-form--description\"\n                ></textarea>\n              </li>\n            </ul>\n            <div class=\"modal-footer\">\n              <button class=\"modal-footer__button\" type=\"submit\" class=\"btn\">\n                Save\n              </button>\n            </div>\n    ");
+    }
+  }, {
+    key: "createEventsMap",
+    value: function createEventsMap() {
+      return {
+        'click:.modal-footer__button': [this.onSubmit.bind(this)],
+        'change:#starting-date': [this.onDateChange.call(this)],
+        'change:#ending-date': [this.onDateChange.call(this)],
+        'change:#starting-hour': [this.onHourChange.call(this)],
+        'change:#ending-hour': [this.onHourChange.call(this)]
+      };
+    }
+  }, {
+    key: "onSubmit",
+    value: function onSubmit(event) {
+      if (!event) {
+        return;
+      }
+
+      event.preventDefault();
+      var formData = this.parentElement.elements;
+      var title = formData.namedItem('title').value;
+      var startingDate = formData.namedItem('starting-date').value;
+      var startingHour = formData.namedItem('starting-hour').value;
+      var endingDate = formData.namedItem('ending-date').value;
+      var endingHour = formData.namedItem('ending-hour').value;
+      var description = formData.namedItem('description').value;
+      var fullStartingDate = dates_1.getFullDate(startingDate, startingHour);
+      var fullEndingDate = dates_1.getFullDate(endingDate, endingHour);
+
+      __1.store.events.addEventToList(new EventModel_1.EventModel(title, fullStartingDate, fullEndingDate, description));
+
+      localSession_1.saveEvents(__1.store.events);
+
+      __1.store.modal.close();
+    }
+  }, {
+    key: "onDateChange",
+    value: function onDateChange() {
+      var _this2 = this;
+
+      var onChange = function onChange() {
+        var formData = _this2.parentElement.elements;
+        var startingDateElement = formData.namedItem('starting-date');
+        var endingDateElement = formData.namedItem('ending-date');
+
+        if (dates_1.calculateDayDifference(new Date(startingDateElement.value), new Date(endingDateElement.value)) > 0) {
+          return;
+        }
+
+        endingDateElement.setAttribute('min', dates_1.getDateString(new Date(startingDateElement.value)));
+        endingDateElement.value = startingDateElement.value;
+      };
+
+      return debounce_1.debounce(onChange, 500);
+    }
+  }, {
+    key: "onHourChange",
+    value: function onHourChange() {
+      var _this3 = this;
+
+      var onChange = function onChange() {
+        var formData = _this3.parentElement.elements;
+        var startingDateElement = formData.namedItem('starting-date');
+        var endingDateElement = formData.namedItem('ending-date');
+        var startingHourElement = formData.namedItem('starting-hour');
+        var endingHourElement = formData.namedItem('ending-hour');
+
+        if (startingDateElement.value !== endingDateElement.value) {
+          return;
+        }
+
+        var _startingHourElement$ = startingHourElement.value.split(':'),
+            _startingHourElement$2 = _slicedToArray(_startingHourElement$, 2),
+            startingHour = _startingHourElement$2[0],
+            startingMinutes = _startingHourElement$2[1];
+
+        var _endingHourElement$va = endingHourElement.value.split(':'),
+            _endingHourElement$va2 = _slicedToArray(_endingHourElement$va, 2),
+            endingHour = _endingHourElement$va2[0],
+            endingMinutes = _endingHourElement$va2[1];
+
+        if (startingHour < endingHour || startingHour === endingHour && startingMinutes <= endingMinutes) {
+          return;
+        }
+
+        endingHourElement.value = startingHourElement.value;
+      };
+
+      return debounce_1.debounce(onChange, 500);
+    }
+  }]);
+
+  return ModalForm;
+}(Component_1.Component);
+
+exports.ModalForm = ModalForm;
+},{"../..":"src/index.ts","../../Models/EventModel":"src/Models/EventModel.ts","../../Utils/dates":"src/Utils/dates.ts","../Component":"src/Components/Component.ts","../../Utils/debounce":"src/Utils/debounce.ts","../../Services/localSession":"src/Services/localSession.ts"}],"src/Components/Modal/Modal.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Modal = void 0;
+
+var __1 = require("../..");
+
+var Component_1 = require("../Component");
+
+var ModalForm_1 = require("./ModalForm");
+
+var Modal = /*#__PURE__*/function (_Component_1$Componen) {
+  _inherits(Modal, _Component_1$Componen);
+
+  var _super = _createSuper(Modal);
+
+  function Modal(parentElement) {
+    var _this;
+
+    _classCallCheck(this, Modal);
+
+    _this = _super.call(this, parentElement);
+    _this.modalModel = __1.store.modal;
+
+    _this.bindModel(_this.modalModel);
+
+    _this.eventsMap = _this.createEventsMap();
+    _this.regionsMap = _this.createRegionsMap();
+
+    _this.modalModel.addEvent('change', _this.toggleModal.bind(_assertThisInitialized(_this)));
+
+    _this.toggleModal();
+
+    _this.addEventToDocument('click', _this.closeModalOnOutsideClick());
+
+    return _this;
+  }
+
+  _createClass(Modal, [{
+    key: "template",
+    value: function template() {
+      var isOpen = this.modalModel.get('isOpen');
+      var position = this.getPosition();
+
+      if (!isOpen) {
+        return '';
+      }
+
+      console.log('hella true');
+      return "\n        <section style=\"top:".concat(position.top, "; left:").concat(position.left, "\" class=\"modal\">\n          <header class=\"modal-header\">\n            <button class=\"modal-header__button\">&times</button>\n          </header>\n          <form class=\"modal-form\">\n          </form>\n        </section>\n    ");
+    }
+  }, {
+    key: "onRender",
+    value: function onRender() {
+      if (!this.isElement(this.regions.form)) {
+        return;
+      }
+
+      new ModalForm_1.ModalForm(this.regions.form).render();
+    }
+  }, {
+    key: "createEventsMap",
+    value: function createEventsMap() {
+      return {
+        'click:.modal-header__button': [this.modalModel.close]
+      };
+    }
+  }, {
+    key: "createRegionsMap",
+    value: function createRegionsMap() {
+      return {
+        form: '.modal-form'
+      };
+    }
+  }, {
+    key: "getPosition",
+    value: function getPosition() {
+      return this.modalModel.get('position') || {
+        top: '0',
+        left: '0'
+      };
+    }
+  }, {
+    key: "toggleModal",
+    value: function toggleModal() {
+      var isOpen = this.modalModel.get('isOpen');
+
+      if (isOpen === undefined) {
+        return;
+      }
+
+      this.parentElement.classList.toggle('modal-container__hidden', !isOpen);
+    }
+  }, {
+    key: "closeModalOnOutsideClick",
+    value: function closeModalOnOutsideClick() {
+      var _this2 = this;
+
+      return function (event) {
+        var target = event.target;
+
+        if (!target || !(target instanceof Element)) {
+          return;
+        }
+
+        if (_this2.parentElement.contains(target) || _this2.parentElement === target) {
+          return;
+        }
+
+        _this2.modalModel.close();
+      };
+    }
+  }, {
+    key: "addEventToDocument",
+    value: function addEventToDocument(eventName, callback) {
+      document.addEventListener(eventName, callback);
+    }
+  }]);
+
+  return Modal;
+}(Component_1.Component);
+
+exports.Modal = Modal;
+},{"../..":"src/index.ts","../Component":"src/Components/Component.ts","./ModalForm":"src/Components/Modal/ModalForm.ts"}],"src/App.ts":[function(require,module,exports) {
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.App = void 0; // import { Header } from './Components/Header';
+// import { MiniCalendar } from './Components/Mini Calendar/MiniCalendar';
+
+var Sidebar_1 = require("./Components/Sidebar");
+
+var Header_1 = require("./Components/Header");
+
+var Calendar_1 = require("./Components/Calendar/Calendar");
+
+var EventButton_1 = require("./Components/EventButton");
+
+var Modal_1 = require("./Components/Modal/Modal");
+
+var _1 = require(".");
+
+var localSession_1 = require("./Services/localSession");
+
+var App = /*#__PURE__*/function () {
+  function App() {
+    _classCallCheck(this, App);
+
+    _1.store.events.addEventsToList(localSession_1.fetchEvents());
+
+    this.header = new Header_1.Header(this.getElement('.header'));
+    this.sidebar = new Sidebar_1.Sidebar(this.getElement('.sidebar'));
+    this.calendar = new Calendar_1.Calendar(this.getElement('.calendar'));
+    this.eventButton = new EventButton_1.EventButton(this.getElement('.event-button--container'));
+    this.modal = new Modal_1.Modal(this.getElement('.modal-container'));
+    this.render();
+  }
+
+  _createClass(App, [{
+    key: "getElement",
+    value: function getElement(selector) {
+      var element = document.querySelector(selector);
+
+      if (!element) {
+        throw new Error("Element by selector: ".concat(selector, " is missing!"));
+      }
+
+      return element;
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      this.header.render();
+      this.sidebar.render();
+      this.calendar.render();
+      this.eventButton.render();
+      this.modal.render();
+    }
+  }]);
+
+  return App;
+}();
+
+exports.App = App;
+},{"./Components/Sidebar":"src/Components/Sidebar.ts","./Components/Header":"src/Components/Header.ts","./Components/Calendar/Calendar":"src/Components/Calendar/Calendar.ts","./Components/EventButton":"src/Components/EventButton.ts","./Components/Modal/Modal":"src/Components/Modal/Modal.ts",".":"src/index.ts","./Services/localSession":"src/Services/localSession.ts"}],"src/Models/CalendarModel.ts":[function(require,module,exports) {
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -1208,7 +2614,7 @@ var CalendarModel = /*#__PURE__*/function (_Model_1$Model) {
   _createClass(CalendarModel, [{
     key: "getCurrentMonthTitle",
     value: function getCurrentMonthTitle() {
-      return dates_1.getMonthTitle(this.getCurrentWeek());
+      return dates_1.getMonthTitle(dates_1.getFirstDayOfWeek(this.getCurrentWeek()));
     }
   }, {
     key: "getCurrentWeek",
@@ -1225,13 +2631,106 @@ var CalendarModel = /*#__PURE__*/function (_Model_1$Model) {
       currentWeekDate.setDate(currentWeekDate.getDate() + weekOffset * daysInAWeek);
       return currentWeekDate;
     }
+  }, {
+    key: "getCurrentWeekStart",
+    value: function getCurrentWeekStart() {
+      return dates_1.getFirstDayOfWeek(this.getCurrentWeek());
+    }
   }]);
 
   return CalendarModel;
 }(Model_1.Model);
 
 exports.CalendarModel = CalendarModel;
-},{"../Utils/dates":"src/Utils/dates.ts","./Model":"src/Models/Model.ts"}],"src/Models/MiniCalendarModel.ts":[function(require,module,exports) {
+},{"../Utils/dates":"src/Utils/dates.ts","./Model":"src/Models/Model.ts"}],"src/Models/EventsModel.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.EventsModel = void 0;
+
+var Model_1 = require("./Model");
+
+var EventsModel = /*#__PURE__*/function (_Model_1$Model) {
+  _inherits(EventsModel, _Model_1$Model);
+
+  var _super = _createSuper(EventsModel);
+
+  function EventsModel() {
+    _classCallCheck(this, EventsModel);
+
+    return _super.call(this, {
+      events: []
+    });
+  }
+
+  _createClass(EventsModel, [{
+    key: "addEventToList",
+    value: function addEventToList(event) {
+      var updatedEvents = this.data.events;
+      updatedEvents.push(event);
+      this.set({
+        events: updatedEvents
+      });
+      console.log(this.data.events);
+    }
+  }, {
+    key: "addEventsToList",
+    value: function addEventsToList(events) {
+      var updatedEvents = [].concat(_toConsumableArray(this.data.events), _toConsumableArray(events));
+      this.set({
+        events: updatedEvents
+      });
+    }
+  }, {
+    key: "clearList",
+    value: function clearList() {
+      this.set({
+        events: []
+      });
+    }
+  }]);
+
+  return EventsModel;
+}(Model_1.Model);
+
+exports.EventsModel = EventsModel;
+},{"./Model":"src/Models/Model.ts"}],"src/Models/MiniCalendarModel.ts":[function(require,module,exports) {
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -1335,7 +2834,95 @@ var MiniCalendarModel = /*#__PURE__*/function (_Model_1$Model) {
 }(Model_1.Model);
 
 exports.MiniCalendarModel = MiniCalendarModel;
-},{"../Utils/dates":"src/Utils/dates.ts","./Model":"src/Models/Model.ts"}],"src/Models/SidebarModel.ts":[function(require,module,exports) {
+},{"../Utils/dates":"src/Utils/dates.ts","./Model":"src/Models/Model.ts"}],"src/Models/ModalModel.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ModalModel = void 0;
+
+var Model_1 = require("./Model");
+
+var ModalModel = /*#__PURE__*/function (_Model_1$Model) {
+  _inherits(ModalModel, _Model_1$Model);
+
+  var _super = _createSuper(ModalModel);
+
+  function ModalModel() {
+    var _this;
+
+    _classCallCheck(this, ModalModel);
+
+    _this = _super.call(this, {
+      isOpen: false,
+      lastOpened: 0,
+      position: {
+        top: '0',
+        left: '0'
+      }
+    });
+
+    _this.show = function (position) {
+      if (!_this.data.isOpen) {
+        _this.set({
+          isOpen: true,
+          lastOpened: new Date().getTime(),
+          position: position
+        });
+      }
+    };
+
+    _this.close = function () {
+      if (_this.data.isOpen && _this.isAfterTimeoutPeriod()) {
+        _this.set({
+          isOpen: false
+        });
+      }
+    };
+
+    return _this;
+  }
+
+  _createClass(ModalModel, [{
+    key: "isAfterTimeoutPeriod",
+    value: function isAfterTimeoutPeriod() {
+      var _a;
+
+      var timeout = 25;
+      var now = new Date().getTime();
+      var lastOpened = (_a = this.data.lastOpened) !== null && _a !== void 0 ? _a : 0;
+      return now - lastOpened > timeout;
+    }
+  }]);
+
+  return ModalModel;
+}(Model_1.Model);
+
+exports.ModalModel = ModalModel;
+},{"./Model":"src/Models/Model.ts"}],"src/Models/SidebarModel.ts":[function(require,module,exports) {
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -1398,7 +2985,11 @@ exports.Store = void 0;
 
 var CalendarModel_1 = require("./CalendarModel");
 
+var EventsModel_1 = require("./EventsModel");
+
 var MiniCalendarModel_1 = require("./MiniCalendarModel");
+
+var ModalModel_1 = require("./ModalModel");
 
 var SidebarModel_1 = require("./SidebarModel");
 
@@ -1408,10 +2999,12 @@ var Store = function Store() {
   this.calendar = new CalendarModel_1.CalendarModel();
   this.miniCalendar = new MiniCalendarModel_1.MiniCalendarModel();
   this.sidebar = new SidebarModel_1.SidebarModel();
+  this.modal = new ModalModel_1.ModalModel();
+  this.events = new EventsModel_1.EventsModel();
 };
 
 exports.Store = Store;
-},{"./CalendarModel":"src/Models/CalendarModel.ts","./MiniCalendarModel":"src/Models/MiniCalendarModel.ts","./SidebarModel":"src/Models/SidebarModel.ts"}],"src/index.ts":[function(require,module,exports) {
+},{"./CalendarModel":"src/Models/CalendarModel.ts","./EventsModel":"src/Models/EventsModel.ts","./MiniCalendarModel":"src/Models/MiniCalendarModel.ts","./ModalModel":"src/Models/ModalModel.ts","./SidebarModel":"src/Models/SidebarModel.ts"}],"src/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1453,7 +3046,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61196" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49419" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
