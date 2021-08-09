@@ -1,3 +1,4 @@
+import { saveEvent } from '../Services/events';
 import { EventModel } from './EventModel';
 import { Model } from './Model';
 
@@ -15,7 +16,7 @@ export class EventsModel extends Model<EventsList> {
     updatedEvents.push(event);
 
     this.set({ events: updatedEvents });
-    console.log(this.data.events);
+    saveEvent(event);
   }
 
   addEventsToList(events: EventModel[]) {

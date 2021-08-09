@@ -24,7 +24,6 @@ export class CalendarEventContainer extends Component {
   }
 
   template(): string {
-    console.log('test');
     this.currentWeekEvents = this.getThisWeeksEvents();
 
     const eventElementString = '<div class="event"></div>';

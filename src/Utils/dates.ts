@@ -69,6 +69,5 @@ export const calculateDayDifference = (date1: Date, date2: Date): number => {
 };
 
 export const getFullDate = (date: string, hours: string): Date => {
-  console.log(date, hours);
   return new Date(`${date} ${hours}`);
 };

@@ -29,7 +29,7 @@ export class Modal extends Component {
     if (!isOpen) {
       return '';
     }
-    console.log('hella true');
+
     return `
         <section style="top:${position.top}; left:${position.left}" class="modal">
           <header class="modal-header">

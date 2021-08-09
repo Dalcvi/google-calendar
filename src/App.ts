@@ -4,7 +4,8 @@ import { Calendar } from './Components/Calendar/Calendar';
 import { EventButton } from './Components/EventButton';
 import { Modal } from './Components/Modal/Modal';
 import { store } from '.';
-import { fetchEvents } from './Services/localSession';
+import { fetchEvents } from './Services/events';
+import { EventModel } from './Models/EventModel';
 
 export class App {
   private header: Header;
@@ -14,7 +15,9 @@ export class App {
   private modal: Modal;
 
   constructor() {
-    store.events.addEventsToList(fetchEvents());
+    fetchEvents().then((events: EventModel[]) =>
+      store.events.addEventsToList(events)
+    );
 
     this.header = new Header(this.getElement('.header'));
     this.sidebar = new Sidebar(this.getElement('.sidebar'));

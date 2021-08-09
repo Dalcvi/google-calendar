@@ -20,7 +20,6 @@ export interface EventPositionsByDay {
 
 export class EventModel extends Model<EventProps> {
   static fromJsonObject(jsonObject: { data: EventProps }): EventModel {
-    console.log(jsonObject);
     return new EventModel(
       jsonObject.data.title,
       new Date(jsonObject.data.startingDate),
@@ -48,6 +47,10 @@ export class EventModel extends Model<EventProps> {
         this.data.endingDate
       ),
     });
+  }
+
+  getAll(): EventProps {
+    return this.data;
   }
 
   isEventIntersectingDates(dateStart: Date, dateEnd: Date): boolean {

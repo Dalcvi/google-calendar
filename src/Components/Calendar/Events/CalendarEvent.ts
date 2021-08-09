@@ -31,7 +31,6 @@ export class CalendarEvent extends Component {
     const positions = this.eventModel.get('positions') || {};
 
     const oneColumnWidth = 100 / 7;
-    console.log();
 
     let eventElementsStrings = '';
 
@@ -57,8 +56,6 @@ export class CalendarEvent extends Component {
         positionByDate.top = minutesInADay - 24;
         positionByDate.height = 24;
       }
-
-      console.log(positionByDate.height / minutesInADay);
 
       const eventElementString = `<div class="calendar__event" style="
         top: ${(positionByDate.top / minutesInADay) * 100}%;

@@ -9,7 +9,6 @@ import {
 } from '../../Utils/dates';
 import { Component, EventsMap, RegionsMap } from '../Component';
 import { debounce } from '../../Utils/debounce';
-import { saveEvents } from '../../Services/localSession';
 
 export class ModalForm extends Component {
   private modalModel: ModalModel;
@@ -124,8 +123,6 @@ export class ModalForm extends Component {
     store.events.addEventToList(
       new EventModel(title, fullStartingDate, fullEndingDate, description)
     );
-
-    saveEvents(store.events);
 
     store.modal.close();
   }
