@@ -3,8 +3,13 @@ import { areDatesTheSame, getWeekdayName } from '../../Utils/dates';
 interface CalendarHeaderProps {
   firstDayOfWeek: Date;
   today: Date;
+  scrollbarWidth: number;
 }
-function CalendarHeader({ firstDayOfWeek, today }: CalendarHeaderProps) {
+function CalendarHeader({
+  firstDayOfWeek,
+  today,
+  scrollbarWidth,
+}: CalendarHeaderProps) {
   const daysInAWeek = 7;
   const topCells = Array.from({ length: daysInAWeek })
     .map((_, index: number) => {
@@ -38,7 +43,10 @@ function CalendarHeader({ firstDayOfWeek, today }: CalendarHeaderProps) {
       <aside className="calendar__top-hour-cell">
         <span className="text--size-small text--color-secondary">gmt+03</span>
       </aside>
-      <ul className="calendar__top-cells list-s-type-none text--color-secondary">
+      <ul
+        className="calendar__top-cells list-s-type-none text--color-secondary"
+        style={{ width: `calc(100% - ${scrollbarWidth})` }}
+      >
         {topCells}
       </ul>
     </header>

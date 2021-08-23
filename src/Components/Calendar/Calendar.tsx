@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import { getFirstDayOfWeek } from '../../Utils/dates';
@@ -10,6 +11,8 @@ interface CalendarProps {
 }
 
 function Calendar({ today }: CalendarProps) {
+  const [scrollbarWidth, setScrollbarWidth] = useState(0);
+
   const weekOffset = useSelector<AppState, number>(
     (state) => state.calendar.weekOffset
   );
@@ -20,10 +23,18 @@ function Calendar({ today }: CalendarProps) {
   const firstDayOfWeek = getFirstDayOfWeek(currentWeek);
   return (
     <section className="calendar">
-      <CalendarHeader firstDayOfWeek={firstDayOfWeek} today={today} />
+      <CalendarHeader
+        firstDayOfWeek={firstDayOfWeek}
+        today={today}
+        scrollbarWidth={scrollbarWidth}
+      />
       <div className="calendar__container">
         <CalendarAside />
-        <CalendarGrid firstDayOfWeek={firstDayOfWeek} today={today} />
+        <CalendarGrid
+          firstDayOfWeek={firstDayOfWeek}
+          today={today}
+          setScrollbarWidth={setScrollbarWidth}
+        />
       </div>
     </section>
   );
