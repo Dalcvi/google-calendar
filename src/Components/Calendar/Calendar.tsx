@@ -23,7 +23,7 @@ function Calendar({ today }: CalendarProps) {
       <CalendarHeader firstDayOfWeek={firstDayOfWeek} today={today} />
       <div className="calendar__container">
         <CalendarAside />
-        <CalendarGrid today={today} />
+        <CalendarGrid firstDayOfWeek={firstDayOfWeek} today={today} />
       </div>
     </section>
   );

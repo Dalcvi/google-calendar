@@ -1,26 +1,54 @@
+import { ReactElement, ReactNode, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import ModalForm from './ModalForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from '../../store';
+import { CloseModal } from '../../store/actions/ModalActions';
 
 interface ModalProps {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  position: { top: number; left: number };
+  children: ReactNode;
 }
 
-function Modal({ isOpen, setIsOpen, position }: ModalProps) {
-  if (!isOpen) return null;
+function Modal({ children }: ModalProps) {
+  const position = useSelector((state: AppState) => state.modal.position);
+
+  const style = {
+    top: position.y,
+    left: position.x,
+  };
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const handleClickOutsideModal = (e: MouseEvent) => {
+      const modal = document.querySelector('.modal');
+
+      if (!modal || !e.target) {
+        return;
+      }
+      if (e.target === modal || modal.contains(e.target as Node)) {
+        return;
+      }
+
+      dispatch(CloseModal());
+    };
+
+    document.addEventListener('click', handleClickOutsideModal);
+    return () => {
+      document.removeEventListener('click', handleClickOutsideModal);
+    };
+  }, [dispatch]);
 
   return createPortal(
-    <section style={position} className="modal">
+    <section style={style} className="modal">
       <header className="modal-header">
         <button
           className="modal-header__button"
-          onClick={() => setIsOpen(false)}
+          onClick={() => dispatch(CloseModal())}
         >
           &times;
         </button>
       </header>
-      <ModalForm setIsOpen={setIsOpen} />
+      {children}
     </section>,
     document.body
   );

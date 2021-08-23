@@ -7,19 +7,19 @@ import {
   getTimeString,
 } from '../../Utils/dates';
 import { CalendarEvent } from '../../Classes/CalendarEvent';
-import { saveEvent } from '../../services/JsonServer';
+import { AddEvent } from '../../store/actions/EventsActions';
+import { CloseModal } from '../../store/actions/ModalActions';
 
 interface ModalFormProps {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  initialDate: Date;
 }
 
-function ModalForm({ setIsOpen }: ModalFormProps) {
-  const today = new Date();
+function ModalForm({ initialDate }: ModalFormProps) {
   const [title, setTitle] = useState('');
-  const [startingDate, setStartingDate] = useState(getDateString(today));
-  const [startingTime, setStartingTime] = useState(getTimeString(today));
-  const [endingDate, setEndingDate] = useState(getDateString(today));
-  const [endingTime, setEndingTime] = useState(getTimeString(today));
+  const [startingDate, setStartingDate] = useState(getDateString(initialDate));
+  const [startingTime, setStartingTime] = useState(getTimeString(initialDate));
+  const [endingDate, setEndingDate] = useState(getDateString(initialDate));
+  const [endingTime, setEndingTime] = useState(getTimeString(initialDate));
   const [description, setDescription] = useState('');
 
   const dispatch = useDispatch();
@@ -33,8 +33,8 @@ function ModalForm({ setIsOpen }: ModalFormProps) {
       description
     );
 
-    saveEvent(calendarEvent, dispatch);
-    setIsOpen(false);
+    dispatch(AddEvent(calendarEvent));
+    CloseModal();
   };
 
   const handleDateOnBlur = () => {

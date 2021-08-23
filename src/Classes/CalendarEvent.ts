@@ -21,6 +21,38 @@ export interface CalendarEventPositionsByDay {
 export class CalendarEvent {
   private data: CalendarEventProps;
 
+  static createEventWithIdFromObject(
+    object: CalendarEventProps
+  ): CalendarEvent {
+    return new CalendarEvent(
+      object.title,
+      new Date(object.startingDate),
+      new Date(object.endingDate),
+      object.description,
+      object.id
+    );
+  }
+
+  static isCalendarEvent(object: any): object is CalendarEventProps {
+    const eventPropTemplate = {
+      id: 0,
+      title: '',
+      startingDate: new Date(),
+      endingDate: new Date(),
+      description: '',
+      positions: {
+        top: 0,
+        height: 0,
+      },
+    };
+    for (let key in eventPropTemplate) {
+      if (object[key] === undefined) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   constructor(
     title: string,
     startingDate: Date,

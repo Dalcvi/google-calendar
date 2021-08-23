@@ -24,9 +24,9 @@ function CalEvents({ today }: EventsProps) {
   const weekEnd = new Date(weekStart);
   weekEnd.setDate(weekEnd.getDate() + 6);
 
-  const currentWeekEvents = allEvents.filter((calendarEvent) =>
-    calendarEvent.isEventIntersectingDates(weekStart, weekEnd)
-  );
+  const currentWeekEvents = allEvents.filter((calendarEvent) => {
+    return calendarEvent.isEventIntersectingDates(weekStart, weekEnd);
+  });
 
   const eventElements = currentWeekEvents.map((calendarEvent) => {
     return (
