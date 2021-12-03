@@ -15,6 +15,12 @@ export const getMonthTitle = (firstDayOfWeek: Date): string => {
     : `${firstDayMonthName.substr(0, 3)} - ${lastDayMonthName.substr(0, 3)}`;
 };
 
+export const getFirstDayOfMonth = (date: Date): Date => {
+  const dateCopy = new Date(date.getTime());
+  dateCopy.setDate(dateCopy.getDate() - dateCopy.getDate() + 1);
+  return dateCopy;
+};
+
 export const getFirstDayOfWeek = (week: Date): Date => {
   const weekCopy = new Date(week.getTime());
   weekCopy.setDate(weekCopy.getDate() - weekCopy.getDay());
@@ -46,6 +52,16 @@ export const getWeekdayName = (dayId: number): string => {
 
 export const getDateString = (date: Date): string => {
   return intl.format(date);
+};
+
+export const get12ClockHourTime = (hour: number): string => {
+  const date = new Date();
+  date.setHours(hour);
+
+  return new Intl.DateTimeFormat('en-LT', {
+    hour: 'numeric',
+    hour12: true,
+  }).format(date);
 };
 
 export const getTimeString = (date: Date): string => {

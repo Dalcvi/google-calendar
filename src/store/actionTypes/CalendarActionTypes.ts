@@ -1,0 +1,5 @@
+export enum CalendarActionTypes {
+  GO_ONE_WEEK_FORWARD = 'GO_ONE_WEEK_FORWARD',
+  GO_ONE_WEEK_BACK = 'GO_ONE_WEEK_BACK',
+  RESET_OFFSET = 'RESET_OFFSET',
+}
